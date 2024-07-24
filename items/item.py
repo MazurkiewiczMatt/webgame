@@ -13,4 +13,5 @@ class Item:
         self.price = 0
         self.name = "Generic item"
         self.type = "Generic"
+        self.description = ""
 

@@ -86,7 +86,9 @@ class ItemAction(Action):
         if item.image_path is not None:
             self.image = Image.open(item.image_path)
             self.image_size = 0.3
-        self.content = item.name
+        self.content = f"**{item.name}**"
+        if item.description != "":
+            self.content += f": {item.description}"
         self.button = f"Buy for {item.price} coins."
         self.item = item
 

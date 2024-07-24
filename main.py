@@ -78,7 +78,10 @@ def cs_body():
                         for i, item in enumerate(st.session_state['player_character'].inventory):
                             with st.container(border=True):
                                 item_object = ITEMS_DATABASE[item]()
-                                st.markdown(item_object.name)
+                                item_str = f"**{item_object.name}**"
+                                if item_object.description != "":
+                                    item_str += f": {item_object.description}"
+                                st.markdown(item_str)
                                 if item_object.type == "potion":
                                     if st.button("Drink.", key=f"inv_item{i}"):
                                         item_object.use(st.session_state['player_character'], st.session_state['world'])

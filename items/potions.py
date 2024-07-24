@@ -44,6 +44,7 @@ class Nootropic(Potion):
         self.name = "Nootropic Potion"
         self.price = 5
         self.image_path = "items/img/nootropic.png"
+        self.description = "Increases Wisdom by 1-5."
 
     def use(self, player, world):
         wisdom_bonus = random.randint(1, 5)
