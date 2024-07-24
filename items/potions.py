@@ -32,3 +32,17 @@ class Beer(Potion):
         else:
             world.message = "You drank a beer and became Drunk."
             player.traits.append("Drunk")
+
+
+@register_item("nootropic")
+class Nootropic(Potion):
+    def __init__(self):
+        super().__init__()
+        self.type = "potion"
+        self.name = "Nootropic Potion"
+        self.price = 5
+        self.image_path = "items/img/nootropic.png"
+
+    def use(self, player, world):
+        player.abilities["Wisdom"] += 5
+        world.message = ":green-background[After drinking the nootropic potion, your wisdom increased by 5!]"
