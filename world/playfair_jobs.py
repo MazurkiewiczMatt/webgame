@@ -119,14 +119,15 @@ class TakeJobAction(Action):
 class EmploymentQuest(Quest):
     def __init__(self, player, current_day):
         super().__init__()
-        days_at_job = current_day - player.job[5]
-        self.title = f"Employment at {player.job[0]}"
-        self.content = (f"Job: :blue-background[{player.job[1]}]  \r :moneybag: Salary: {player.job[2]} coins/shift  "
-                        f"\r :clock1: {days_at_job} days since last promotion.")
-        self.actions["work"] = WorkShiftAction(player.job)
-        if "negotiated_today" not in player.tags:
-            self.actions["negotiate"] = NegotiateRaiseAction(days_at_job, player)
-        self.actions["quit"] = QuitJobAction()
+        if player.job is not None:
+            days_at_job = current_day - player.job[5]
+            self.title = f"Employment at {player.job[0]}"
+            self.content = (f"Job: :blue-background[{player.job[1]}]  \r :moneybag: Salary: {player.job[2]} coins/shift  "
+                            f"\r :clock1: {days_at_job} days since last promotion.")
+            self.actions["work"] = WorkShiftAction(player.job)
+            if "negotiated_today" not in player.tags:
+                self.actions["negotiate"] = NegotiateRaiseAction(days_at_job, player)
+            self.actions["quit"] = QuitJobAction()
 
 
 class QuitJobAction(Action):
