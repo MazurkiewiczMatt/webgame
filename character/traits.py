@@ -41,6 +41,6 @@ def get_trait_description(degree, trait):
 
     # Find the appropriate description based on the degree
     for min_val, max_val, description in descriptions:
-        if min_val <= degree < max_val:
+        if min_val <= degree <= max_val:
             return description
     return "Invalid degree"
