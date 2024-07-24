@@ -169,7 +169,7 @@ class WorkShiftAction(Action):
             strength_bonus = random.randint(0, 2)
             if strength_bonus > 0:
                 player.abilities['Strength'] += strength_bonus
-                world.message += f"  \r  \r Your strength is grew by {strength_bonus} from the physical activity."
+                world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."
         else:
             world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {salary} coins.]"
         player.money += salary
