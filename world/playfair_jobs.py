@@ -152,6 +152,9 @@ class WorkShiftAction(Action):
         self.image = Image.open(companies[job[0]]["image_path"])
 
     def execute(self, player, world):
+        if player.personality["Energy"] <= 20:
+            world.message = ":red-background[You are too exhausted to work.]"
+            return None
         salary = player.job[2]
         if player.job[1] == "Manual worker":
             world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}."
@@ -170,8 +173,14 @@ class WorkShiftAction(Action):
             if strength_bonus > 0:
                 player.abilities['Strength'] += strength_bonus
                 world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."
+            exhaustion_gain = random.randint(10, 20)
+            player.personality["Energy"] -= exhaustion_gain
+            world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
         else:
             world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {salary} coins.]"
+            exhaustion_gain = random.randint(5, 15)
+            player.personality["Energy"] -= exhaustion_gain
+            world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
         player.money += salary
         super().execute(player, world)
 

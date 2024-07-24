@@ -17,6 +17,7 @@ class Character:
             "Charisma": 0,
         }
         self.personality = {
+            "Energy": 80,
             "Dedication": 50,
             "Faith": 50,
             "Degeneracy": 50,
@@ -27,8 +28,11 @@ class Character:
 
 
     def update(self, world):
+
         for ability in self.abilities:
             self.abilities[ability] = min(130, max(0, self.abilities[ability]))
+        for personality in self.personality:
+            self.personality[personality] = min(100, max(0, self.personality[personality]))
 
         if "Cold" in self.traits:
             toss = random.random()
@@ -37,6 +41,10 @@ class Character:
             if toss < 0.15:
                 self.traits.remove("Cold")
                 world.message += "  \r You are no longer suffering from cold."
+            elif toss < 0.40:
+                energy_loss = random.randint(1, 5)
+                self.personality["Energy"] -= energy_loss
+                world.message += f"  \r You lose {energy_loss} Energy due to illness."
             elif toss > 0.93:
                 self.abilities["Strength"] -= 1
                 world.message += "  \r You become weaker due to cold (*-1 Strength*)"
@@ -163,6 +171,7 @@ class Character:
             "Charisma": 20,
         })
         char.personality = data.get("personality", {
+            "Energy": 80,
             "Dedication": 50,
             "Faith": 50,
             "Degeneracy": 50,

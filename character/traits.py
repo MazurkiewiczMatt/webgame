@@ -1,6 +1,13 @@
 def get_trait_description(degree, trait):
     # Define the mappings
     trait_mapping = {
+        "Energy": [
+            (0, 20, "Exhausted"),
+            (20, 40, "Tired"),
+            (40, 70, "Neutral"),
+            (70, 90, "Energetic"),
+            (90, 100, "Blitzed")
+        ],
         "Dedication": [
             (0, 20, "Dormant"),
             (20, 40, "Aimless"),

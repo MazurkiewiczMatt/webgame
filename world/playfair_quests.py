@@ -32,6 +32,10 @@ class A(Action):
                 player.abilities["Charisma"] += charisma_gain
                 if charisma_gain > 0:
                     world.message += f"  \r You gain *+{charisma_gain} Charisma*"
+                energy_boost = random.randint(60, 70)
+                player.personality["Energy"] += energy_boost
+                player.personality["Energy"] = min(100, player.personality["Energy"])
+                world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
                 super().execute(player, world)
             else:
                 world.message = (":red-background[*You don't have enough money.*]")
@@ -50,6 +54,10 @@ class B(Action):
         if player.money >= 8:
             player.money -= 8
             world.message = (":green-background[You slept well.]")
+            energy_boost = random.randint(45, 60)
+            player.personality["Energy"] += energy_boost
+            player.personality["Energy"] = min(100, player.personality["Energy"])
+            world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
             super().execute(player, world)
         else:
             world.message = (":red-background[*You don't have enough money.*]")
@@ -66,6 +74,10 @@ class C(Action):
         if player.money >= 2:
             player.money -= 2
             world.message = (":blue-background[You spend the night listening to prayers.]")
+            energy_boost = random.randint(25, 50)
+            player.personality["Energy"] += energy_boost
+            player.personality["Energy"] = min(100, player.personality["Energy"])
+            world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
             toss = random.random()
             if toss < 0.5:
                 faith_bonus = random.randint(1, 4)
@@ -95,6 +107,10 @@ class D(Action):
     def execute(self, player, world):
         degeneracy_bonus = random.randint(2, 6)
         world.message = (f":red-background[You had a rough night (*+{degeneracy_bonus}* Degeneracy).]")
+        energy_boost = random.randint(10, 30)
+        player.personality["Energy"] += energy_boost
+        player.personality["Energy"] = min(100, player.personality["Energy"])
+        world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
         player.personality["Degeneracy"] += degeneracy_bonus
         toss = random.random()
         if "Resilient" in player.traits:
