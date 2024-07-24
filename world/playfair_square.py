@@ -131,6 +131,8 @@ class PreachAction(Action):
                 world.message += f'  \r You collect :moneybag: {money_gain} coins in donations.'
         else:
             world.message += '  \r :red-background[No one pays much attention to your rambling.]'
+        player.tags.remove("q:playfair_temple")
+        player.tags.remove("in-quest")
         super().execute(player, world)
 
 class RenounceAction(Action):
