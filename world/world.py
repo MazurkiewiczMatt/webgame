@@ -65,7 +65,7 @@ class World:
             if "q:playfair_shop" in character.tags:
                 return [ShopQuest(self.playfair_store)]
             elif "q:playfair_temple" in character.tags:
-                return [TempleQuest()]
+                return [TempleQuest(character)]
             return []
 
         quests = []

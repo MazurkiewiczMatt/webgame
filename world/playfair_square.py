@@ -65,7 +65,7 @@ class ShopQuest(Quest):
         self.actions["exit"] = ExitSquareBuilding()
 
 class TempleQuest(Quest):
-    def __init__(self):
+    def __init__(self, player):
         super().__init__()
         self.title = "Playfair Square / Temple"
         self.content = ("Constructed from sun-kissed stones, the temple's structure is adorned with intricate carvings "
@@ -74,6 +74,7 @@ class TempleQuest(Quest):
                         "believed to be blessed by the goddess herself..")
         self.actions["pray"] = PrayAction()
         self.actions["donate"] = DonateAction()
+        self.actions["preach"] = PreachAction(player)
         self.actions["renounce"] = RenounceAction()
         self.actions["exit"] = ExitSquareBuilding()
 
@@ -103,6 +104,34 @@ class DonateAction(Action):
             world.message = f"You donate 10 coins and :green-background[your Faith increases by {faith_bonus}.]"
         else:
             world.message = f":red-background[You don't have enough to donate.]"
+
+class PreachAction(Action):
+    def __init__(self, player):
+        super().__init__()
+        odds = (player.personality["Faith"] + player.abilities["Charisma"])//2 - 30
+        self.content = f'Start preaching to the crowd.  \r Odds of success: {odds}% ([{player.personality["Faith"]} Faith + {player.abilities["Charisma"]} Charisma]/2 - 30)'
+        self.button = "Preach."
+        self.odds = odds
+
+    def execute(self, player, world):
+        energy_loss = random.randint(2, 10)
+        player.personality["Energy"] -= energy_loss
+        world.message = f"You spend {energy_loss} Energy preaching in the temple."
+
+        toss = random.randint(1, 100)
+
+        if toss < self.odds:
+            faith_gain = random.randint(4, 10)
+            player.personality["Faith"] += faith_gain
+            money_gain = random.randint(0, 5)
+            player.money += money_gain
+            world.message += '  \r :green-background[The crowd listens attentively and thanks you for your teaching.]'
+            world.message += f'  \r Your faith grows by {faith_gain}.'
+            if money_gain > 0:
+                world.message += f'  \r You collect :moneybag: {money_gain} coins in donations.'
+        else:
+            world.message += '  \r :red-background[No one pays much attention to your rambling.]'
+        super().execute(player, world)
 
 class RenounceAction(Action):
     def __init__(self):
