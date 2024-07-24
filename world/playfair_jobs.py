@@ -168,6 +168,7 @@ class WorkShiftAction(Action):
             if toss < player.abilities["Strength"]:
                 bonus = random.randint(1,4)
                 world.message += f"  \r Boss is impressed by your work and gives you a small bonus today ({bonus})."
+                salary += bonus
             world.message += f"  \r You earned :moneybag: {salary} coins."
             strength_bonus = random.randint(0, 2)
             if strength_bonus > 0:
