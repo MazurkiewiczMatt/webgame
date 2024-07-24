@@ -1,3 +1,5 @@
+import random
+
 from .item import Item, register_item
 
 
@@ -44,5 +46,6 @@ class Nootropic(Potion):
         self.image_path = "items/img/nootropic.png"
 
     def use(self, player, world):
-        player.abilities["Wisdom"] += 5
-        world.message = ":green-background[After drinking the nootropic potion, your wisdom increased by 5!]"
+        wisdom_bonus = random.randint(1, 5)
+        player.abilities["Wisdom"] += wisdom_bonus
+        world.message = f":green-background[After drinking the nootropic potion, your wisdom increased by {wisdom_bonus}!]"
