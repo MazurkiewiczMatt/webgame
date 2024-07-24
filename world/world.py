@@ -31,11 +31,11 @@ class World:
             "corpo4": (generate_corpo_job()),
         }
 
-        self.playfair_store = [generate_random_store_item() for _ in range(6)]
+        self.playfair_store = [random.choice(["beer", "beer", "nootropic"]) for _ in range(6)]
 
 
     def update(self):
-        self.playfair_store = [generate_random_store_item() for _ in range(6)]
+        self.playfair_store = [random.choice(["beer", "beer", "nootropic"]) for _ in range(6)]
         if self.state["Time of day"] == "Night":
             self.state["Time of day"] = "Morning"
             self.state["Day"] += 1
@@ -107,5 +107,3 @@ class World:
         return world
 
 
-def generate_random_store_item():
-    return random.choice(["beer", "beer", "nootropic"])
