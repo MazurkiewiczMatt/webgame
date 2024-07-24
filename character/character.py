@@ -20,7 +20,7 @@ class Character:
             "Energy": 80,
             "Dedication": 50,
             "Faith": 50,
-            "Degeneracy": 50,
+            "Degeneracy": 35,
         }
         self.inventory = []
         self.money = 0

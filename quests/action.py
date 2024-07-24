@@ -6,5 +6,5 @@ class Action:
         self.image_size = None
 
     def execute(self, player, world):
-        world.update()
+        world.update(player)
         player.update(world)

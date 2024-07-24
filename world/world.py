@@ -4,9 +4,9 @@ from PIL import Image
 
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
-from .playfair_quests import NightPlayfairQuest
-from .playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
-from .playfair_square import PlayfairSquare, ShopQuest, TempleQuest
+from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest
+from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
+from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest
 
 
 class World:
@@ -34,12 +34,15 @@ class World:
         self.playfair_store = []
         self.replenish_store()
 
+        self.missions = []
+
     def replenish_store(self):
         self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic"], weights=[0.5, 0.25, 0.25])[0] for _ in range(6)]
 
 
-    def update(self):
+    def update(self, character):
         self.replenish_store()
+        self.generate_missions(character)
         if self.state["Time of day"] == "Night":
             self.state["Time of day"] = "Morning"
             self.state["Day"] += 1
@@ -56,6 +59,22 @@ class World:
     def display(self):
         return dict_to_display_string(self.state)
 
+    def generate_missions(self, character):
+        missions = []
+        if self.state["Location"] == "The City of Playfair":
+            toss = random.randint(1, 100)
+            if toss < character.personality["Degeneracy"]//2 - 15:
+                possible_villain_missions = []
+
+                if "Playfair Citizen" not in character.traits:
+                    possible_villain_missions.append(CounterfeitDocumentsQuest())
+
+                possible_villain_missions.append(FistfightQuest())
+
+                if len(possible_villain_missions)>0:
+                    missions.append(random.choice(possible_villain_missions))
+        self.missions = missions
+
     def generate_quests(self, character):
 
         if "in-quest" in character.tags:
@@ -68,7 +87,7 @@ class World:
                 return [TempleQuest(character)]
             return []
 
-        quests = []
+        quests = [] + self.missions
 
         if self.state["Location"] == "The City of Playfair":
             if self.state["Time of day"] == "Night":

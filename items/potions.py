@@ -27,7 +27,7 @@ class Beer(Potion):
             player.traits.append("Blackout drunk")
             player.personality["Degeneracy"] += 6
             world.message += "   \r You lose control of yourself (*+6* Degeneracy)."
-            world.update()
+            world.update(player)
             player.update(world)
         elif "Drunk" in player.traits:
             player.traits.remove("Drunk")
