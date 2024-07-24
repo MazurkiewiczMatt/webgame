@@ -26,16 +26,16 @@ class EtiquetteCourse(Action):
         super().__init__()
         self.content = ("A **one-week** course with classes every **morning**. Teaches basics of etiquette and diplomacy,"
                         " increasing Charisma of the participant by anywhere between 7 and 21. "
-                        "  \r :moneybag: :blue-background[Cost 120 for Playfair Citizens, 200 for non-citizens]")
+                        "  \r :moneybag: :blue-background[Cost 50 for Playfair Citizens, 100 for non-citizens]")
         self.button = "Enroll."
         self.image = Image.open("world/img/actions/charisma_class.jpg")
         self.image_size = 0.4
 
     def execute(self, player, world):
         if "Playfair Citizen" in player.traits:
-            fee = 120
+            fee = 50
         else:
-            fee = 200
+            fee = 100
         if player.money > fee:
             player.money -= fee
             player.tags.append("PU_charisma_class")
@@ -47,16 +47,16 @@ class LogicCourse(Action):
         super().__init__()
         self.content = ("A **two-weeks** course with classes every **afternoon**. Develops Wisdom of the participant, "
                         " with increases in range 14-28."
-                        "  \r :moneybag: :blue-background[Cost 200 for Playfair Citizens, 500 for non-citizens]")
+                        "  \r :moneybag: :blue-background[Cost 100 for Playfair Citizens, 200 for non-citizens]")
         self.button = "Enroll."
         self.image = Image.open("world/img/actions/intelligence_course.png")
         self.image_size = 0.4
 
     def execute(self, player, world):
         if "Playfair Citizen" in player.traits:
-            fee = 200
+            fee = 100
         else:
-            fee = 500
+            fee = 200
         if player.money > fee:
             player.money -= fee
             player.tags.append("PU_intelligence_class")
