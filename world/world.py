@@ -6,7 +6,7 @@ from utils import dict_to_display_string
 from quests import PlaceholderQuest
 from .playfair_quests import NightPlayfairQuest
 from .playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
-from .playfair_square import PlayfairSquare
+from .playfair_square import PlayfairSquare, ShopQuest, TempleQuest
 
 
 class World:
@@ -55,6 +55,10 @@ class World:
             for tag in character.tags:
                 if tag[:2] == "a:":
                     return [InterviewQuest(self.playfair_jobs[tag[2:]], tag[2:], character)]
+            if "q:playfair_shop" in character.tags:
+                return [ShopQuest()]
+            elif "q:playfair_temple" in character.tags:
+                return [TempleQuest()]
             return []
 
         quests = []

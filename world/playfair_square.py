@@ -1,3 +1,5 @@
+from PIL import Image
+
 from quests import Quest, Action
 
 
@@ -30,12 +32,52 @@ class ShopAction(Action):
         self.content = ("The General Emporium is a charming, rustic shop offering a curated selection of any item "
                         "either a passing adventurer or Playfair denizen may need.")
         self.button = "Shop."
+        self.image = Image.open("world/img/places/shop.jpg")
     def execute(self, player, world):
-        pass
+        player.tags.append("in-quest")
+        player.tags.append("q:playfair_shop")
+
 
 class TempleAction(Action):
     def __init__(self):
         super().__init__()
-        self.content = "Temple with curios."
+        self.content = "A temple dedicated to a goddess of vitality."
+        self.image = Image.open("world/img/places/temple.jpg")
     def execute(self, player, world):
-        pass
+        player.tags.append("in-quest")
+        player.tags.append("q:playfair_temple")
+
+
+class ShopQuest(Quest):
+    def __init__(self):
+        super().__init__()
+        self.title = "Shop"
+
+        class PassTimeAction(Action):
+            def __init__(self):
+                super().__init__()
+                self.content = "Work in progress."
+                self.button = "Pass time."
+
+            def execute(self, player, world):
+                player.tags.remove("in-quest")
+                player.tags.remove("q:playfair_shop")
+
+        self.actions["pass-time"] = PassTimeAction()
+
+class TempleQuest(Quest):
+    def __init__(self):
+        super().__init__()
+        self.title = "Temple"
+
+        class PassTimeAction(Action):
+            def __init__(self):
+                super().__init__()
+                self.content = "Work in progress."
+                self.button = "Pass time."
+
+            def execute(self, player, world):
+                player.tags.remove("in-quest")
+                player.tags.remove("q:playfair_temple")
+
+        self.actions["pass-time"] = PassTimeAction()
