@@ -49,7 +49,7 @@ class JobBoard(Quest):
 class JobAction(Action):
     def __init__(self, key, job):
         super().__init__()
-        self.content = (f":blue-background[**{job[1]}** at {job[0]}.] {companies[job[0]]["short_description"]}"
+        self.content = (f":blue-background[**{job[1]}** at {job[0]}.] {companies[job[0]]['short_description']}"
                         f"  \r :moneybag: {job[2]} coins/shift")
         if job[3] is not None:
             self.content += f"  \r :brain: Only candidates with high intelligence (*{job[3]}+ Wisdom*) will be considered."
@@ -172,7 +172,7 @@ class NegotiateRaiseAction(Action):
             test = (+10, ":green-background[easy]")
         self.odds = max(0, player.abilities["Charisma"] + test[0] - 10)
         self.content = (f"It will be {test[1]} ({test[0]}) to negotiate a raise, as you got one (or got employed"
-                        f") {days_at_job} days ago.  \r :blue-background[Odds of success: {self.odds}%] ({player.abilities["Charisma"]} Charisma + ({test[0]}) {test[1]} - 10 Employer)")
+                        f") {days_at_job} days ago.  \r :blue-background[Odds of success: {self.odds}%] ({player.abilities['Charisma']} Charisma + ({test[0]}) {test[1]} - 10 Employer)")
         self.button = "Negotiate a raise."
 
     def execute(self, player, world):

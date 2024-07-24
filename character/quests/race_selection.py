@@ -33,9 +33,9 @@ class EaglefolkSelection(Action):
         player.abilities["Strength"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 20 + random.randint(1, 10) + random.randint(1, 10)
-        world.message += f"  \r Strength: 20+2d10 = {player.abilities["Strength"]}."
-        world.message += f"  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}."
-        world.message += f"  \r Charisma: 20+2d10 = {player.abilities["Charisma"]}."
+        world.message += f'  \r Strength: 20+2d10 = {player.abilities["Strength"]}.'
+        world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 20+2d10 = {player.abilities["Charisma"]}.'
         player.traits.append("Playfair Citizen")
         player.money += random.randint(1, 10) + random.randint(1, 10)
 
@@ -57,9 +57,9 @@ class BoarfolkSelection(Action):
         player.abilities["Strength"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 15 + random.randint(1, 10) + random.randint(1, 10)
-        world.message += f"  \r Strength: 25+2d10 = {player.abilities["Strength"]}."
-        world.message += f"  \r Wisdom: 25+2d10 = {player.abilities["Wisdom"]}."
-        world.message += f"  \r Charisma: 15+2d10 = {player.abilities["Charisma"]}."
+        world.message += f'  \r Strength: 25+2d10 = {player.abilities["Strength"]}.'
+        world.message += f'  \r Wisdom: 25+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 15+2d10 = {player.abilities["Charisma"]}.'
         player.money += random.randint(1, 10)
         player.traits.append("Resilient")
 
@@ -81,9 +81,9 @@ class LionfolkSelection(Action):
         player.abilities["Strength"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 25 + random.randint(1, 10) + random.randint(1, 10)
-        world.message += f"  \r Strength: 25+2d10 = {player.abilities["Strength"]}."
-        world.message += f"  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}."
-        world.message += f"  \r Charisma: 25+2d10 = {player.abilities["Charisma"]}."
+        world.message += f'  \r Strength: 25+2d10 = {player.abilities["Strength"]}.'
+        world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 25+2d10 = {player.abilities["Charisma"]}.'
         player.traits.append("Playfair Citizen")
         player.money += random.randint(1, 10)
 
@@ -104,9 +104,9 @@ class OxfolkSelection(Action):
         player.abilities["Strength"] = 40 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 15 + random.randint(1, 10) + random.randint(1, 10)
-        world.message += f"  \r Strength: 40+2d10 = {player.abilities["Strength"]}."
-        world.message += f"  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}."
-        world.message += f"  \r Charisma: 15+2d10 = {player.abilities["Charisma"]}."
+        world.message += f'  \r Strength: 40+2d10 = {player.abilities["Strength"]}.'
+        world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 15+2d10 = {player.abilities["Charisma"]}.'
 
 
 class ForeignerSelection(Action):
@@ -126,8 +126,8 @@ class ForeignerSelection(Action):
         player.abilities["Strength"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 20 + random.randint(1, 10) + random.randint(1, 10)
-        world.message += f"  \r Strength: 20+2d10 = {player.abilities["Strength"]}."
-        world.message += f"  \r Wisdom: 25+2d10 = {player.abilities["Wisdom"]}."
-        world.message += f"  \r Charisma: 20+2d10 = {player.abilities["Charisma"]}."
+        world.message += f"  \r Strength: 20+2d10 = {player.abilities['Strength']}."
+        world.message += f"  \r Wisdom: 25+2d10 = {player.abilities['Wisdom']}."
+        world.message += f"  \r Charisma: 20+2d10 = {player.abilities['Charisma']}."
         player.traits.append("Foreigner")
         player.money += 20 + random.randint(1, 10) + random.randint(1, 10)
