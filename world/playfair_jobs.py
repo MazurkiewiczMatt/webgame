@@ -180,7 +180,7 @@ class NegotiateRaiseAction(Action):
         toss = random.randint(1, 100)
         if toss <= self.odds:
             old_salary = player.job[2]
-            bonus = random.randint(1, 3) + old_salary // 15
+            bonus = min(20, random.randint(1, 3) + old_salary // 15)
             player.job[2] = old_salary + bonus
             player.job[5] = world.state["Day"]
             world.message = f":green-background[You successfully negotiated a raise by {bonus} coins per shift!]  \r :moneybag: Salary at {player.job[0]}: {old_salary} => {player.job[2]}"

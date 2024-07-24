@@ -19,18 +19,19 @@ class A(Action):
     def __init__(self):
         super().__init__()
         self.content = ("Starlight hotel offers luxury units for the most affluent of Playfair citizens.")
-        self.button = "Pay 40 coins."
+        self.button = "Pay 60 coins."
         self.image = Image.open("world/img/shelters/hotel.jpg")
 
     def execute(self, player, world):
         if "Playfair Citizen" in player.traits:
-            if player.money >= 40:
-                player.money -= 40
+            if player.money >= 60:
+                player.money -= 60
                 world.message = ("You had an excquisite meal at the restaurant and socialized"
                                  " with other rich of the city.  \r :green-background[You wake up very well rested.]")
-                charisma_gain = random.randint(1, 2)
+                charisma_gain = random.randint(0, 2)
                 player.abilities["Charisma"] += charisma_gain
-                world.message += f"  \r You gain *+{charisma_gain} Charisma*"
+                if charisma_gain > 0:
+                    world.message += f"  \r You gain *+{charisma_gain} Charisma*"
                 super().execute(player, world)
             else:
                 world.message = (":red-background[*You don't have enough money.*]")
