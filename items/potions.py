@@ -49,4 +49,4 @@ class Nootropic(Potion):
     def use(self, player, world):
         wisdom_bonus = random.randint(1, 5)
         player.abilities["Wisdom"] += wisdom_bonus
-        world.message = f":green-background[After drinking the nootropic potion, your wisdom increased by {wisdom_bonus}!]"
+        world.message = f"After drinking the nootropic potion, :green-background[your wisdom increased by {wisdom_bonus}.]"
