@@ -6,7 +6,7 @@ from utils import dict_to_display_string
 from quests import PlaceholderQuest
 from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
-from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest
+from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest, PickpocketQuest
 
 
 class World:
@@ -70,6 +70,7 @@ class World:
                     possible_villain_missions.append(CounterfeitDocumentsQuest())
 
                 possible_villain_missions.append(FistfightQuest())
+                possible_villain_missions.append(PickpocketQuest())
 
                 if len(possible_villain_missions)>0:
                     missions.append(random.choice(possible_villain_missions))
@@ -89,12 +90,13 @@ class World:
                 return [UniversityQuest(character)]
             return []
 
-        quests = [] + self.missions
+        quests = []
 
         if self.state["Location"] == "The City of Playfair":
             if self.state["Time of day"] == "Night":
                 quests.append(NightPlayfairQuest())
             else:
+                quests += self.missions
                 if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags:
                     quests.append(StudentQuest(character, self.state["Time of day"]))
                 if "employed" in character.tags and character.job is not None:

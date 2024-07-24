@@ -176,12 +176,15 @@ class WorkShiftAction(Action):
                 world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."
             exhaustion_gain = random.randint(20, 40)
             player.personality["Energy"] -= exhaustion_gain
-            world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
+            world.message += f"  \r  Your Energy decreased by {exhaustion_gain}."
         else:
             world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {salary} coins.]"
             exhaustion_gain = random.randint(10, 25)
             player.personality["Energy"] -= exhaustion_gain
-            world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
+            world.message += f"  \r  Your Energy decreased by {exhaustion_gain}."
+        dedication_gain = random.randint(1, 3)
+        player.personality["Dedication"] += dedication_gain
+        world.message += f"  \r  Your Dedication increased by {dedication_gain}."
         player.money += salary
         super().execute(player, world)
 
