@@ -41,6 +41,16 @@ class Character:
                 self.abilities["Strength"] -= 1
                 world.message += "  \r You become weaker due to cold (*-1 Strength*)"
 
+        if "Hangover" in self.traits:
+            toss = random.random()
+            if "Resilient" in self.traits:
+                toss * 0.8
+            if toss < 0.75:
+                self.traits.remove("Hangover")
+                world.message += "  \r You are no longer suffering from hangover."
+                for ability in self.abilities:
+                    self.abilities[ability] += 5
+
         def hangover():
             self.traits.append("Hangover")
             world.message += "  \r You wake up with a terrible headache. All of your abilities are temporarily lowered by 5."
@@ -69,15 +79,7 @@ class Character:
                 if toss < 0.2:
                     hangover()
 
-        if "Hangover" in self.traits:
-            toss = random.random()
-            if "Resilient" in self.traits:
-                toss * 0.8
-            if toss < 0.8:
-                self.traits.remove("Hangover")
-                world.message += "  \r You are no longer suffering from hangover."
-                for ability in self.abilities:
-                    self.abilities[ability] += 5
+
 
 
         if "negotiated_today" in self.tags:
