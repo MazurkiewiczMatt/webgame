@@ -111,10 +111,9 @@ class TakeJobAction(Action):
         player.job = [*world.playfair_jobs[self.key], world.state["Day"]]
         player.traits.append(companies[world.playfair_jobs[self.key][0]]["employee_trait"])
         player.tags.append("employed")
+        world.message = f":green-background[You got hired as {world.playfair_jobs[self.key][1]} at {world.playfair_jobs[self.key][0]}]"
         if "corpo" in self.key:
             world.playfair_jobs[self.key] = generate_corpo_job()
-        world.message = f":green-background[You got hired as {world.playfair_jobs[self.key][1]} at {world.playfair_jobs[self.key][0]}]"
-
 
 class EmploymentQuest(Quest):
     def __init__(self, player, current_day):
@@ -175,12 +174,12 @@ class WorkShiftAction(Action):
             if strength_bonus > 0:
                 player.abilities['Strength'] += strength_bonus
                 world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."
-            exhaustion_gain = random.randint(10, 20)
+            exhaustion_gain = random.randint(20, 40)
             player.personality["Energy"] -= exhaustion_gain
             world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
         else:
             world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {salary} coins.]"
-            exhaustion_gain = random.randint(5, 15)
+            exhaustion_gain = random.randint(10, 25)
             player.personality["Energy"] -= exhaustion_gain
             world.message += f"  \r  Your energy decreased by {exhaustion_gain}."
         player.money += salary

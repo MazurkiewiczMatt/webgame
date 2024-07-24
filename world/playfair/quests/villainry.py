@@ -100,7 +100,7 @@ class FightAction(Action):
             player.abilities["Strength"] += bonus
             world.message += f"  \r Your Strength increases by {bonus}."
         else:
-            world.message = ":red-background[You fail the test ({toss}/{player.abilities['Strength']})] and get beaten up pretty hardly."
+            world.message = f":red-background[You fail the test ({toss}/{player.abilities['Strength']})] and get beaten up pretty hardly."
         degeneracy_gain = random.randint(5, 10)
         player.personality["Degeneracy"] += degeneracy_gain
         world.message += f'  \r  Your Degeneracy increased by {degeneracy_gain}.'
