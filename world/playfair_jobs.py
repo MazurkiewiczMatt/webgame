@@ -190,15 +190,15 @@ class NegotiateRaiseAction(Action):
     def __init__(self, days_at_job, player):
         super().__init__()
         if days_at_job < 1:
-            test = (-40, ":red-background[impossible]")
+            test = (-80, ":red-background[impossible]")
         elif days_at_job < 3:
-            test = (-20, ":red-background[very hard]")
+            test = (-40, ":red-background[very hard]")
         elif days_at_job < 5:
             test = (-10, ":red-background[hard]")
-        elif days_at_job < 10:
+        elif days_at_job < 8:
             test = (+0, ":blue-background[alright]")
         else:
-            test = (+10, ":green-background[easy]")
+            test = (+20, ":green-background[easy]")
         self.odds = max(0, player.abilities["Charisma"] + test[0] - 10)
         self.content = (f"It will be {test[1]} ({test[0]}) to negotiate a raise, as you got one (or got employed"
                         f") {days_at_job} days ago.  \r :blue-background[Odds of success: {self.odds}%] ({player.abilities['Charisma']} Charisma + ({test[0]}) {test[1]} - 10 Employer)")
