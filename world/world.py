@@ -70,7 +70,7 @@ class World:
             if self.state["Time of day"] == "Night":
                 quests.append(NightPlayfairQuest())
             else:
-                if "employed" in character.tags:
+                if "employed" in character.tags and character.job is not None:
                     quests.append(EmploymentQuest(character, self.state["Day"]))
                 quests.append(PlayfairSquare(self.state))
                 quests.append(JobBoard(self.playfair_jobs))
