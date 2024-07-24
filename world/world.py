@@ -31,6 +31,8 @@ class World:
             "corpo4": (generate_corpo_job()),
         }
 
+        self.playfair_store = ["beer", "beer", "beer"]
+
 
     def update(self):
         if self.state["Time of day"] == "Night":
@@ -56,7 +58,7 @@ class World:
                 if tag[:2] == "a:":
                     return [InterviewQuest(self.playfair_jobs[tag[2:]], tag[2:], character)]
             if "q:playfair_shop" in character.tags:
-                return [ShopQuest()]
+                return [ShopQuest(self.playfair_store)]
             elif "q:playfair_temple" in character.tags:
                 return [TempleQuest()]
             return []

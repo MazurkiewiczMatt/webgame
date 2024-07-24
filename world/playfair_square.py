@@ -1,6 +1,8 @@
 from PIL import Image
 
 from quests import Quest, Action
+from items import ITEMS_DATABASE
+
 
 
 class PlayfairSquare(Quest):
@@ -42,6 +44,7 @@ class TempleAction(Action):
     def __init__(self):
         super().__init__()
         self.content = "A temple dedicated to a goddess of vitality."
+        self.button = "Enter."
         self.image = Image.open("world/img/places/temple.jpg")
     def execute(self, player, world):
         player.tags.append("in-quest")
@@ -49,16 +52,17 @@ class TempleAction(Action):
 
 
 class ShopQuest(Quest):
-    def __init__(self):
+    def __init__(self, items):
         super().__init__()
-        self.title = "Shop"
-        self.content = "Work in progress."
+        self.title = "Playfair Square / The General Emporium"
+        for i in range(len(items)):
+            self.actions[i] = ItemAction(items[i])
         self.actions["exit"] = ExitSquareBuilding()
 
 class TempleQuest(Quest):
     def __init__(self):
         super().__init__()
-        self.title = "Temple"
+        self.title = "Playfair Square / Temple"
         self.content = "Work in progress."
         self.actions["exit"] = ExitSquareBuilding()
 
@@ -73,3 +77,22 @@ class ExitSquareBuilding(Action):
             player.tags.remove("q:playfair_shop")
         if "q:playfair_temple" in player.tags:
             player.tags.remove("q:playfair_temple")
+
+
+class ItemAction(Action):
+    def __init__(self, item_key):
+        super().__init__()
+        item = ITEMS_DATABASE[item_key]()
+        if item.image_path is not None:
+            self.image = Image.open(item.image_path)
+        self.content = item.name
+        self.button = f"Buy for {item.price} coins."
+        self.item = item
+
+    def execute(self, player, world):
+        if player.money > self.item.price:
+            player.inventory.append(self.item.key)
+            world.playfair_store.remove(self.item.key)
+            world.message = f"You bought {self.item.name} for {self.item.price} coins."
+        else:
+            world.message = f":red-background[You can't afford to buy {self.item.name} for {self.item.price} coins.]"
