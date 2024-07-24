@@ -4,7 +4,7 @@ from PIL import Image
 
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
-from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest
+from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
 from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest
 
@@ -85,6 +85,8 @@ class World:
                 return [ShopQuest(self.playfair_store)]
             elif "q:playfair_temple" in character.tags:
                 return [TempleQuest(character)]
+            elif "q:playfair_university" in character.tags:
+                return [UniversityQuest(character)]
             return []
 
         quests = [] + self.missions
@@ -93,6 +95,8 @@ class World:
             if self.state["Time of day"] == "Night":
                 quests.append(NightPlayfairQuest())
             else:
+                if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags:
+                    quests.append(StudentQuest(character, self.state["Time of day"]))
                 if "employed" in character.tags and character.job is not None:
                     quests.append(EmploymentQuest(character, self.state["Day"]))
                 quests.append(PlayfairSquare(self.state))

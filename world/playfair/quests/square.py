@@ -19,14 +19,21 @@ class PlayfairSquare(Quest):
             self.content = ("By afternoon, Playfair Square is alive with energy and color, bathed in the warm, "
                             "golden hues of the sun. A gentle breeze rustles the leaves, and the fountain at the "
                             "center of the square sparkles in the sunlight.")
-        self.content += ("\r  \r The Playfair Square boasts a :blue-background[shop (open only in the mornings)] and "
+        self.content += ("\r  \r The Playfair Square boasts a :blue-background[shop (open only in the mornings)], "
                          "a :blue-background[temple (open through day, and offering"
-                         " cheap shelter at night)].")
+                         " cheap shelter at night)], and university (reception for non-students only in afternoons).")
         if city_state["Time of day"] == "Morning":
             self.actions["shop"] = ShopAction()
         else:
             self.content += "  \r The shop is now :red-background[closed]."
         self.actions["temple"] = TempleAction()
+        if city_state["Time of day"] == "Morning":
+            self.content += "  \r The university reception is now :red-background[closed]."
+        else:
+            self.actions["PU"] = UniversityAction()
+
+
+
 
 
 
@@ -54,6 +61,17 @@ class TempleAction(Action):
         else:
             player.tags.append("in-quest")
             player.tags.append("q:playfair_temple")
+
+class UniversityAction(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = ("Playfair University (PU) offers vocational courses, specialized training, and associate "
+                        "degrees.")
+        self.button = "Enter."
+        self.image = Image.open("world/img/places/university.jpg")
+    def execute(self, player, world):
+        player.tags.append("in-quest")
+        player.tags.append("q:playfair_university")
 
 
 class ShopQuest(Quest):
@@ -159,6 +177,8 @@ class ExitSquareBuilding(Action):
             player.tags.remove("q:playfair_shop")
         if "q:playfair_temple" in player.tags:
             player.tags.remove("q:playfair_temple")
+        if "q:playfair_university" in player.tags:
+            player.tags.remove("q:playfair_university")
 
 
 class ItemAction(Action):

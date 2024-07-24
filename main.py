@@ -57,7 +57,7 @@ def cs_sidebar():
 
     st.sidebar.write("Dev only:")
     if st.sidebar.button("God mode"):
-        st.session_state['player_character'].money = 5000
+        st.session_state['player_character'].money = 50000
         st.session_state['player_character'].abilities["Strength"] = 100
         st.session_state['player_character'].abilities["Wisdom"] = 100
         st.session_state['player_character'].abilities["Charisma"] = 100
