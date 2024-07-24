@@ -75,18 +75,25 @@ def cs_body():
                     if len(st.session_state['player_character'].inventory) == 0:
                         st.markdown("Your inventory is empty.")
                     else:
+                        item_types_displayed = []
                         for i, item in enumerate(st.session_state['player_character'].inventory):
-                            with st.container(border=True):
-                                item_object = ITEMS_DATABASE[item]()
-                                item_str = f"**{item_object.name}**"
-                                if item_object.description != "":
-                                    item_str += f": {item_object.description}"
-                                st.markdown(item_str)
-                                if item_object.type == "potion":
-                                    if st.button("Drink.", key=f"inv_item{i}"):
-                                        item_object.use(st.session_state['player_character'], st.session_state['world'])
-                                        st.session_state['player_character'].inventory.remove(item)
-                                        st.rerun()
+                            if item not in item_types_displayed:
+                                item_types_displayed.append(item)
+                                with st.container(border=True):
+                                    item_object = ITEMS_DATABASE[item]()
+                                    no = st.session_state['player_character'].inventory.count(item)
+                                    if no > 1:
+                                        item_str = f"**({no}x) {item_object.name}**"
+                                    else:
+                                        item_str = f"**{item_object.name}**"
+                                    if item_object.description != "":
+                                        item_str += f": {item_object.description}"
+                                    st.markdown(item_str)
+                                    if item_object.type == "potion":
+                                        if st.button("Drink.", key=f"inv_item{i}"):
+                                            item_object.use(st.session_state['player_character'], st.session_state['world'])
+                                            st.session_state['player_character'].inventory.remove(item)
+                                            st.rerun()
             with col12:
                 st.markdown(st.session_state['player_character'].display2())
             with col13:
