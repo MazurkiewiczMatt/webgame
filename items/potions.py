@@ -26,7 +26,7 @@ class Beer(Potion):
             world.message = ":red-background[You became blackout drunk.]"
             player.traits.append("Blackout drunk")
             player.personality["Degeneracy"] += 6
-            world.message += "   \r You became more degenerate (*+6* Degeneracy)."
+            world.message += "   \r You lose control of yourself (*+6* Degeneracy)."
             world.update()
             player.update(world)
         elif "Drunk" in player.traits:
@@ -34,7 +34,7 @@ class Beer(Potion):
             world.message = "You drank another beer and became Very drunk."
             degeneracy_bonus = random.randint(1, 4)
             player.personality["Degeneracy"] += degeneracy_bonus
-            world.message += f"   \r You became more degenerate (*+{degeneracy_bonus}* Degeneracy)."
+            world.message += f"   \r You lose control of yourself (*+{degeneracy_bonus}* Degeneracy)."
             player.traits.append("Very drunk")
         else:
             world.message = "You drank a beer and became Drunk."
