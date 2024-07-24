@@ -110,7 +110,7 @@ class RenounceAction(Action):
         self.content = "Publicly renounce the goddess. (Decreases Faith)"
         self.button = "Renounce."
     def execute(self, player, world):
-        faith_bonus = random.randint(10,20)
+        faith_bonus = random.randint(6,14)
         player.personality["Faith"] -= faith_bonus
         world.message = f":red-background[Your Faith decreases by {faith_bonus}.]"
         player.tags.remove("q:playfair_temple")
