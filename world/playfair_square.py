@@ -94,6 +94,7 @@ class ItemAction(Action):
 
     def execute(self, player, world):
         if player.money > self.item.price:
+            player.money -= self.item.price
             player.inventory.append(self.item.key)
             world.playfair_store.remove(self.item.key)
             world.message = f"You bought {self.item.name} for {self.item.price} coins."
