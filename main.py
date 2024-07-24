@@ -133,7 +133,7 @@ def cs_body():
             with st.container(border=True):
                 if quest.title != "":
                     st.subheader(quest.title)
-                if quest.title in ["Job board.", "Playfair Square."]:
+                if quest.title in ["Job board.", "Playfair Square.", "Playfair Port."]:
                     with st.expander(f"Show: {quest.title}", expanded=False):
                         display_quest(quest)
                 else:

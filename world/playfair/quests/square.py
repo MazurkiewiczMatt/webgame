@@ -179,6 +179,8 @@ class ExitSquareBuilding(Action):
             player.tags.remove("q:playfair_temple")
         if "q:playfair_university" in player.tags:
             player.tags.remove("q:playfair_university")
+        if "q:aietrade" in player.tags:
+            player.tags.remove("q:aietrade")
 
 
 class ItemAction(Action):

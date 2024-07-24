@@ -4,7 +4,7 @@ from PIL import Image
 
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
-from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest
+from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest, PortQuest, AIEQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
 from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest, PickpocketQuest
 
@@ -36,11 +36,26 @@ class World:
 
         self.missions = []
 
+        self.resource_prices = {
+            "steel-ingot": 11,
+            "silver-ingot": 60,
+            "sxotic-fish": 300,
+        }
+
     def replenish_store(self):
         self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic"], weights=[0.5, 0.25, 0.25])[0] for _ in range(6)]
 
+    def update_resource_prices(self):
+        for resource in self.resource_prices:
+            toss = random.random()
+            if toss < 0.3:
+                self.resource_prices[resource] += random.randint(0, 2) - 1
+            elif toss < 0.4:
+                self.resource_prices[resource] = int(self.resource_prices[resource] * 1.1)
+
 
     def update(self, character):
+        self.update_resource_prices()
         self.replenish_store()
         self.generate_missions(character)
         if self.state["Time of day"] == "Night":
@@ -88,6 +103,8 @@ class World:
                 return [TempleQuest(character)]
             elif "q:playfair_university" in character.tags:
                 return [UniversityQuest(character)]
+            elif "q:aietrade" in character.tags:
+                return [AIEQuest(self.resource_prices, character)]
             return []
 
         quests = []
@@ -102,6 +119,7 @@ class World:
                 if "employed" in character.tags and character.job is not None:
                     quests.append(EmploymentQuest(character, self.state["Day"]))
                 quests.append(PlayfairSquare(self.state))
+                quests.append(PortQuest())
                 quests.append(JobBoard(self.playfair_jobs))
                 quests.append(PlaceholderQuest())
 
@@ -118,6 +136,7 @@ class World:
             "tags": self.tags,
             "message": self.message,
             "image_path": self.image_path,
+            "resource_prices": self.resource_prices,
         }
 
     @classmethod
@@ -130,6 +149,11 @@ class World:
         world.tags = data.get("tags", [])
         world.message = data.get("message", "")
         world.image_path = data.get("image_path", None)
+        world.resource_prices = data.get("resource_prices", {
+            "steel-ingot": 11,
+            "silver-ingot": 60,
+            "exotic-fish": 300,
+        })
         if world.image_path is not None:
             world.image = Image.open(world.image_path)
         else:
