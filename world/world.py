@@ -78,7 +78,8 @@ class World:
                     quests.append(EmploymentQuest(character, self.state["Day"]))
                 quests.append(PlayfairSquare(self.state))
                 quests.append(JobBoard(self.playfair_jobs))
-        quests.append(PlaceholderQuest())
+                quests.append(PlaceholderQuest())
+
 
 
         if len(quests) == 0 and "no-quests" in character.tags:
