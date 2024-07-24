@@ -52,32 +52,24 @@ class ShopQuest(Quest):
     def __init__(self):
         super().__init__()
         self.title = "Shop"
-
-        class PassTimeAction(Action):
-            def __init__(self):
-                super().__init__()
-                self.content = "Work in progress."
-                self.button = "Pass time."
-
-            def execute(self, player, world):
-                player.tags.remove("in-quest")
-                player.tags.remove("q:playfair_shop")
-
-        self.actions["pass-time"] = PassTimeAction()
+        self.content = "Work in progress."
+        self.actions["exit"] = ExitSquareBuilding()
 
 class TempleQuest(Quest):
     def __init__(self):
         super().__init__()
         self.title = "Temple"
+        self.content = "Work in progress."
+        self.actions["exit"] = ExitSquareBuilding()
 
-        class PassTimeAction(Action):
-            def __init__(self):
-                super().__init__()
-                self.content = "Work in progress."
-                self.button = "Pass time."
+class ExitSquareBuilding(Action):
+    def __init__(self):
+        super().__init__()
+        self.button = "Exit."
 
-            def execute(self, player, world):
-                player.tags.remove("in-quest")
-                player.tags.remove("q:playfair_temple")
-
-        self.actions["pass-time"] = PassTimeAction()
+    def execute(self, player, world):
+        player.tags.remove("in-quest")
+        if "q:playfair_shop" in player.tags:
+            player.tags.remove("q:playfair_shop")
+        if "q:playfair_temple" in player.tags:
+            player.tags.remove("q:playfair_temple")
