@@ -152,8 +152,27 @@ class WorkShiftAction(Action):
         self.image = Image.open(companies[job[0]]["image_path"])
 
     def execute(self, player, world):
-        world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {player.job[2]} coins.]"
-        player.money += player.job[2]
+        salary = player.job[2]
+        if player.job[1] == "Manual worker":
+            world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}."
+            toss = random.randint(1, 100)
+            world.message += f"  \r Strength test: {toss} / {player.abilities['Strength'] + 20} ({player.abilities['Strength']} Strength + 20)"
+            if toss < player.abilities["Strength"] + 20:
+                world.message += " :green-background[(Passed)]"
+            else:
+                world.message += " :red-background[(Failed)  \r The bossman docked your pay by 2 coins.]"
+                salary -= 2
+            if toss < player.abilities["Strength"]:
+                bonus = random.randint(1,4)
+                world.message += f"  \r Boss is impressed by your work and gives you a small bonus today ({bonus})."
+            world.message += f"  \r You earned :moneybag: {salary} coins."
+            strength_bonus = random.randint(0, 2)
+            if strength_bonus > 0:
+                player.abilities['Strength'] += strength_bonus
+                world.message += f"  \r  \r Your strength is grew by {strength_bonus} from the physical activity."
+        else:
+            world.message = f"You worked a shift at your job as {player.job[1]} at {player.job[0]}.  \r :green-background[You earned {salary} coins.]"
+        player.money += salary
         super().execute(player, world)
 
 
