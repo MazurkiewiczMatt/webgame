@@ -1,3 +1,5 @@
+import random
+
 from PIL import Image
 
 from quests import Quest, Action
@@ -63,8 +65,40 @@ class TempleQuest(Quest):
     def __init__(self):
         super().__init__()
         self.title = "Playfair Square / Temple"
-        self.content = "Work in progress."
+        self.content = ("Constructed from sun-kissed stones, the temple's structure is adorned with intricate carvings "
+                        "of intertwining vines and blossoms, symbolizing life and growth. At its heart lies a "
+                        "tranquil courtyard, where a crystal-clear spring feeds into a small, sacred pool, "
+                        "believed to be blessed by the goddess herself..")
+        self.actions["pray"] = PrayAction()
+        self.actions["donate"] = DonateAction()
         self.actions["exit"] = ExitSquareBuilding()
+
+class PrayAction(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = "Join a three-hours-long mass. (Increases Faith)"
+        self.button = "Pray."
+    def execute(self, player, world):
+        faith_bonus = random.randint(1,6)
+        player.personality["Faith"] += faith_bonus
+        world.message = f":green-background[Your Faith increases by {faith_bonus}.]"
+        player.tags.remove("q:playfair_temple")
+        player.tags.remove("in-quest")
+        super().execute(player, world)
+
+class DonateAction(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = "Be generous towards renovation of a praying area. (Increases Faith)"
+        self.button = "Donate 10 coins."
+    def execute(self, player, world):
+        if player.money > 10:
+            player.money -= 10
+            faith_bonus = random.randint(1,6)
+            player.personality["Faith"] += faith_bonus
+            world.message = f"You donate 10 coins and :green-background[your Faith increases by {faith_bonus}.]"
+        else:
+            world.message = f":red-background[You don't have enough to donate.]"
 
 class ExitSquareBuilding(Action):
     def __init__(self):
