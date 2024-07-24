@@ -94,6 +94,13 @@ def cs_body():
                                             item_object.use(st.session_state['player_character'], st.session_state['world'])
                                             st.session_state['player_character'].inventory.remove(item)
                                             st.rerun()
+                                    if no > 1:
+                                        delete_button = "Throw away 1."
+                                    else:
+                                        delete_button = "Throw away."
+                                    if st.button(delete_button, key=f"inv_item_delete_{i}"):
+                                        st.session_state['player_character'].inventory.remove(item)
+                                        st.rerun()
             with col12:
                 st.markdown(st.session_state['player_character'].display2())
             with col13:
