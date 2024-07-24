@@ -47,7 +47,7 @@ class Nootropic(Potion):
         super().__init__()
         self.type = "potion"
         self.name = "Nootropic Potion"
-        self.price = 5
+        self.price = 10
         self.image_path = "items/img/nootropic.png"
         self.description = "Increases Wisdom by 1-5."
 
@@ -55,3 +55,18 @@ class Nootropic(Potion):
         wisdom_bonus = random.randint(1, 5)
         player.abilities["Wisdom"] += wisdom_bonus
         world.message = f"After drinking the nootropic potion, :green-background[your wisdom increased by {wisdom_bonus}.]"
+
+@register_item("energy_drink")
+class EnergyDrink(Potion):
+    def __init__(self):
+        super().__init__()
+        self.type = "potion"
+        self.name = "Energy Drink"
+        self.price = 5
+        self.image_path = "items/img/energy_drink.jpg"
+        self.description = "Increases Energy by 3-10."
+
+    def use(self, player, world):
+        bonus = random.randint(3, 10)
+        player.personality["Energy"] += bonus
+        world.message = f"After drinking the energy drink, :green-background[your Energy increased by {bonus}.]"
