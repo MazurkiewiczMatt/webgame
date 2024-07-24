@@ -71,30 +71,35 @@ class C(Action):
         self.image = Image.open("world/img/shelters/church.jpg")
 
     def execute(self, player, world):
-        if player.money >= 2:
-            player.money -= 2
-            world.message = (":blue-background[You spend the night listening to prayers.]")
-            energy_boost = random.randint(25, 50)
-            player.personality["Energy"] += energy_boost
-            player.personality["Energy"] = min(100, player.personality["Energy"])
-            world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
-            toss = random.random()
-            if toss < 0.5:
-                faith_bonus = random.randint(1, 4)
-                degeneracy_penalty = random.randint(0, 1)
-                player.personality["Faith"] += faith_bonus
-                player.personality["Degeneracy"] -= degeneracy_penalty
-                world.message += f"  \r You feel your faith growing (*+{faith_bonus}* Faith"
-                if degeneracy_penalty > 0:
-                    world.message += f", *-{degeneracy_penalty}* Degeneracy"
-                world.message += ")."
-            elif toss < 0.8:
-                if "Cold" not in player.traits:
-                    world.message += "  \r You caught a cold."
-                    player.traits.append("Cold")
-            super().execute(player, world)
+        if player.personality["Faith"] < 20:
+            world.message = "You are far too godless to be let into the temple."
+        elif player.personality["Faith"] < 30:
+            world.message = "You too godless to be let to the common sleeping area."
         else:
-            world.message = (":red-background[*You don't have enough money.*]")
+            if player.money >= 2:
+                player.money -= 2
+                world.message = (":blue-background[You spend the night listening to prayers.]")
+                energy_boost = random.randint(25, 50)
+                player.personality["Energy"] += energy_boost
+                player.personality["Energy"] = min(100, player.personality["Energy"])
+                world.message += f"  \r You gain back :green-background[{energy_boost} Energy]."
+                toss = random.random()
+                if toss < 0.5:
+                    faith_bonus = random.randint(1, 4)
+                    degeneracy_penalty = random.randint(0, 1)
+                    player.personality["Faith"] += faith_bonus
+                    player.personality["Degeneracy"] -= degeneracy_penalty
+                    world.message += f"  \r You feel your faith growing (*+{faith_bonus}* Faith"
+                    if degeneracy_penalty > 0:
+                        world.message += f", *-{degeneracy_penalty}* Degeneracy"
+                    world.message += ")."
+                elif toss < 0.8:
+                    if "Cold" not in player.traits:
+                        world.message += "  \r You caught a cold."
+                        player.traits.append("Cold")
+                super().execute(player, world)
+            else:
+                world.message = (":red-background[*You don't have enough money.*]")
 
 
 class D(Action):

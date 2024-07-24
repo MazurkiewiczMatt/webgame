@@ -49,8 +49,11 @@ class TempleAction(Action):
         self.button = "Enter."
         self.image = Image.open("world/img/places/temple.jpg")
     def execute(self, player, world):
-        player.tags.append("in-quest")
-        player.tags.append("q:playfair_temple")
+        if player.personality["Faith"] < 20:
+            world.message = ":red-background[You are too faithless to be let into the temple.]"
+        else:
+            player.tags.append("in-quest")
+            player.tags.append("q:playfair_temple")
 
 
 class ShopQuest(Quest):
@@ -71,6 +74,7 @@ class TempleQuest(Quest):
                         "believed to be blessed by the goddess herself..")
         self.actions["pray"] = PrayAction()
         self.actions["donate"] = DonateAction()
+        self.actions["renounce"] = RenounceAction()
         self.actions["exit"] = ExitSquareBuilding()
 
 class PrayAction(Action):
@@ -99,6 +103,19 @@ class DonateAction(Action):
             world.message = f"You donate 10 coins and :green-background[your Faith increases by {faith_bonus}.]"
         else:
             world.message = f":red-background[You don't have enough to donate.]"
+
+class RenounceAction(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = "Publicly renounce the goddess. (Decreases Faith)"
+        self.button = "Renounce."
+    def execute(self, player, world):
+        faith_bonus = random.randint(10,20)
+        player.personality["Faith"] -= faith_bonus
+        world.message = f":red-background[Your Faith decreases by {faith_bonus}.]"
+        player.tags.remove("q:playfair_temple")
+        player.tags.remove("in-quest")
+        super().execute(player, world)
 
 class ExitSquareBuilding(Action):
     def __init__(self):
