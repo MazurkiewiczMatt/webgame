@@ -5,6 +5,7 @@ from settings import *
 from world import World
 from character import Character
 from state_management import load_from_json, create_json_data
+from items import ITEMS_DATABASE
 
 # Initial page config
 
@@ -69,6 +70,20 @@ def cs_body():
             col11, col12, col13 = st.columns([4, 2, 3])
             with col11:
                 st.markdown(st.session_state['player_character'].display())
+                st.markdown(f"  \r :moneybag: Coins: {st.session_state['player_character'].money}")
+                with st.popover(label="Inventory"):
+                    if len(st.session_state['player_character'].inventory) == 0:
+                        st.markdown("Your inventory is empty.")
+                    else:
+                        for i, item in enumerate(st.session_state['player_character'].inventory):
+                            with st.container(border=True):
+                                item_object = ITEMS_DATABASE[item]()
+                                st.markdown(item_object.name)
+                                if item_object.type == "potion":
+                                    if st.button("Drink.", key=f"inv_item{i}"):
+                                        item_object.use(st.session_state['player_character'], st.session_state['world'])
+                                        st.session_state['player_character'].inventory.remove(item)
+                                        st.rerun()
             with col12:
                 st.markdown(st.session_state['player_character'].display2())
             with col13:
@@ -117,7 +132,10 @@ def display_quest(quest):
             if action.image is None:
                 col12, col13 = st.columns([4, 1])
             else:
-                col11, col12, col13 = st.columns([2, 2, 1])
+                if action.image_size is not None:
+                    col11, col12, col13 = st.columns([2*action.image_size, 2*(1-action.image_size), 1.0])
+                else:
+                    col11, col12, col13 = st.columns([2, 2, 1])
                 with col11:
                     st.image(action.image)
             with col12:

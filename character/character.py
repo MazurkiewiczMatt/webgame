@@ -29,6 +29,7 @@ class Character:
     def update(self, world):
         for ability in self.abilities:
             self.abilities[ability] = min(130, max(0, self.abilities[ability]))
+
         if "Cold" in self.traits:
             toss = random.random()
             if "Resilient" in self.traits:
@@ -39,9 +40,50 @@ class Character:
             elif toss > 0.93:
                 self.abilities["Strength"] -= 1
                 world.message += "  \r You become weaker due to cold (*-1 Strength*)"
+
+        def hangover():
+            self.traits.append("Hangover")
+            world.message += "  \r You wake up with a terrible headache. All of your abilities are temporarily lowered by 5."
+            for ability in self.abilities:
+                self.abilities[ability] -= 5
+
+        if "Blackout drunk" in self.traits:
+            self.traits.remove("Blackout drunk")
+            hangover()
+        if "Very drunk" in self.traits:
+            self.traits.remove("Very drunk")
+            if world.state["Time of day"] == "Morning":
+                toss = random.random()
+                if "Resilient" in self.traits:
+                    toss * 1.2
+                if toss < 0.5:
+                    hangover()
+            else:
+                self.traits.append("Drunk")
+        if "Drunk" in self.traits:
+            self.traits.remove("Drunk")
+            if world.state["Time of day"] == "Morning":
+                toss = random.random()
+                if "Resilient" in self.traits:
+                    toss * 1.2
+                if toss < 0.2:
+                    hangover()
+
+        if "Hangover" in self.traits:
+            toss = random.random()
+            if "Resilient" in self.traits:
+                toss * 0.8
+            if toss < 0.8:
+                self.traits.remove("Hangover")
+                world.message += "  \r You are no longer suffering from hangover."
+                for ability in self.abilities:
+                    self.abilities[ability] += 5
+
+
         if "negotiated_today" in self.tags:
             if world.state["Time of day"] == "Night":
                 self.tags.remove("negotiated_today")
+
 
     def generate_quests(self, world):
         quests = []
@@ -72,15 +114,6 @@ class Character:
         if self.race is not None:
             result += f"Ethnicity: {self.race}  \r"
         result += "  \r"
-        result += f"Coins: {self.money} | **Inventory**:  \r"
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                result += f"{item}  \r"
-        else:
-            if self.money < 10:
-                result += f"You have nothing to your name."
-            else:
-                result += f"You travel with no items."
         return result
 
     def display2(self):

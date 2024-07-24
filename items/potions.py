@@ -6,8 +6,8 @@ class Potion(Item):
         super().__init__()
         self.type = "potion"
 
-    def use(self, player):
-        return self
+    def use(self, player, world):
+        pass
 
 @register_item("beer")
 class Beer(Potion):
@@ -18,6 +18,17 @@ class Beer(Potion):
         self.price = 1
         self.image_path = "items/img/beer.jpg"
 
-    def use(self, player):
-        player.traits.add("Drunk")
-        return None
+    def use(self, player, world):
+        if "Very drunk" in player.traits:
+            player.traits.remove("Very drunk")
+            world.message = ":red-background[You became blackout drunk.]"
+            player.traits.append("Blackout drunk")
+            world.update()
+            player.update(world)
+        elif "Drunk" in player.traits:
+            player.traits.remove("Drunk")
+            world.message = "You drank another beer and became Very drunk."
+            player.traits.append("Very drunk")
+        else:
+            world.message = "You drank a beer and became Drunk."
+            player.traits.append("Drunk")
