@@ -96,6 +96,23 @@ class FightAction(Action):
         self.image = Image.open("world/img/actions/fistfight.png")
         self.image_size = 0.4
 
+    def execute(self, player, world):
+        toss = random.randint(1, 100)
+        if toss < player.abilities["Strength"]:
+            world.message += f":green-background[You pass the test ({toss}/{player.abilities['Strength']})] and emerge victorious from the battle."
+            bonus = random.randint(1, 5)
+            player.abilities["Strength"] += bonus
+            world.message += f"  \r Your Strength increases by {bonus}."
+        else:
+            world.message = f":red-background[You fail the test ({toss}/{player.abilities['Strength']})] and get beaten up pretty hardly."
+        degeneracy_gain = random.randint(2, 6)
+        player.personality["Degeneracy"] += degeneracy_gain
+        world.message += f'  \r  Your Degeneracy increased by {degeneracy_gain}.'
+        for mission in world.missions:
+            if mission.__class__.__name__ == "FistfightQuest":
+                world.missions.remove(mission)
+
+
 
 class PickpocketQuest(Quest):
     def __init__(self):
@@ -120,7 +137,7 @@ class AcceptBribeAction(Action):
     def execute(self, player, world):
         degeneracy_gain = random.randint(2, 6)
         player.personality["Degeneracy"] += degeneracy_gain
-        world.message = f'  \r  Your Degeneracy increased by {degeneracy_gain}.'
+        world.message += f'  \r  Your Degeneracy increased by {degeneracy_gain}.'
         player.money += 10
         world.message += f'  \r  :green-background[Your gained 10 coins].'
         for mission in world.missions:

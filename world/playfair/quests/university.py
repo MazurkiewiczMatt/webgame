@@ -100,7 +100,7 @@ class EtiquetteClass(Action):
         world.message = f"You studied at Playfair University and :green-background[gained {charisma_gain} Charisma points]."
 
         player.tags.remove(self.tag)
-        if self.current_day <= 7:
+        if self.current_day < 7:
             player.tags.append(self.tag[:18] + str(self.current_day))
         else:
             player.tags.remove("PU_charisma_class")
@@ -130,7 +130,7 @@ class LogicClass(Action):
         world.message = f"You studied at Playfair University and :green-background[gained {wisdom_gain} Wisdom points]."
 
         player.tags.remove(self.tag)
-        if self.current_day <= 14:
+        if self.current_day < 14:
             player.tags.append(self.tag[:22] + str(self.current_day))
         else:
             player.tags.remove("PU_intelligence_class")

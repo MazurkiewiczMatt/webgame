@@ -55,6 +55,7 @@ class World:
                 self.resource_prices[resource] = int(self.resource_prices[resource] * 1.1)
             elif toss < 0.45:
                 self.resource_prices[resource] = int(self.resource_prices[resource] * 0.85)
+            self.resource_prices[resource] = max(10, self.resource_prices[resource])
 
 
     def update(self, character):

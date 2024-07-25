@@ -192,13 +192,13 @@ class WorkShiftAction(Action):
 class NegotiateRaiseAction(Action):
     def __init__(self, days_at_job, player):
         super().__init__()
-        if days_at_job < 1:
+        if days_at_job < 2:
             test = (-80, ":red-background[impossible]")
-        elif days_at_job < 3:
+        elif days_at_job < 4:
             test = (-40, ":red-background[very hard]")
-        elif days_at_job < 5:
+        elif days_at_job < 6:
             test = (-10, ":red-background[hard]")
-        elif days_at_job < 8:
+        elif days_at_job < 9:
             test = (+0, ":blue-background[alright]")
         else:
             test = (+20, ":green-background[easy]")
