@@ -218,7 +218,7 @@ class ItemAction(Action):
         self.item = item
 
     def execute(self, player, world):
-        if player.money > self.item.price:
+        if player.money >= self.item.price:
             player.money -= self.item.price
             player.inventory.append(self.item.key)
             world.playfair_store.remove(self.item.key)
