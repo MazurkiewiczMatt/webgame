@@ -1,1 +1,1 @@
-from .world import *
+from .world import World
