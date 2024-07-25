@@ -173,7 +173,7 @@ class WorkShiftAction(Action):
             strength_bonus = random.randint(0, 1)
             if strength_bonus > 0:
                 player.abilities['Strength'] += strength_bonus
-                world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."
+                world.message += f"  \r  \r Your Strength grew by {strength_bonus} from the physical activity."
             exhaustion_gain = random.randint(20, 40)
             player.personality["Energy"] -= exhaustion_gain
             world.message += f"  \r  Your Energy decreased by {exhaustion_gain}."

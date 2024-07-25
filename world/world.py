@@ -4,8 +4,9 @@ from PIL import Image
 
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
-from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest, PortQuest, AIEQuest
+from .playfair.quests import ShelterPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest, PortQuest, AIEQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
+from .playfair.quests.shelters.hotel import HotelOfferQuest
 from .playfair.quests.shelters.temple import MysteriousWhisperQuest, StrangeDreamsQuest
 from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest, PickpocketQuest
 
@@ -40,7 +41,7 @@ class World:
         self.resource_prices = {
             "steel-ingot": 11,
             "silver-ingot": 60,
-            "sxotic-fish": 300,
+            "exotic-fish": 300,
         }
 
     def replenish_store(self):
@@ -114,13 +115,15 @@ class World:
                 return [MysteriousWhisperQuest()]
             elif "q:temple-strangedreams" in character.tags:
                 return [StrangeDreamsQuest()]
+            elif "q:hotel_offer" in character.tags:
+                return [HotelOfferQuest(self.resource_prices)]
             return []
 
         quests = []
 
         if self.state["Location"] == "The City of Playfair":
             if self.state["Time of day"] == "Night":
-                quests.append(NightPlayfairQuest())
+                quests.append(ShelterPlayfairQuest())
             else:
                 quests += self.missions
                 if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags:

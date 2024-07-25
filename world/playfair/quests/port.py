@@ -27,11 +27,40 @@ class AIEQuest(Quest):
         super().__init__()
         self.title = "Playfair Port / Aero Import-Export."
         self.content = ("Here you can invest in resources with hope of selling them at a higher price later.")
+
+        if "s:shipment" in player.tags or "s:scam" in player.tags:
+            self.actions["pickup"] = AIEPickUp(player, prices)
+
         for res in prices:
             self.actions[f"buy_{res}"] = BuyResource(player, res, prices[res])
             self.actions[f"sell_{res}"] = SellResource(player, res, prices[res])
         self.actions["exit"] = ExitSquareBuilding()
 
+class AIEPickUp(Action):
+    def __init__(self, player, prices):
+        super().__init__()
+        note = player.notes["Shipment"]
+        for resource in prices:
+            if resource in note:
+                self.resource = resource
+                self.item = ITEMS_DATABASE[resource]()
+        for i in range(1, 31):
+            if str(i) in note:
+                self.number = i
+        self.content = f"Pick up the shipment (:blue-background[{self.number} of {self.item.name}])."
+        self.button = "Receive."
+
+    def execute(self, player, world):
+        if "s:scam" in player.tags:
+            world.message = ("The manager explains to you that your ownership papers are forged, and that :red-background[the "
+                     "deal you made was most probably a scam].  \r  \r You leave emptyhanded.")
+            player.tags.remove("s:scam")
+            player.notes.pop("Shipment")
+        else:
+            player.inventory += [self.resource for _ in range(self.number)]
+            world.message = f"You successfully pick up your shipment.  \r :green-background[You gain {self.number} of {self.item.name}.]"
+            player.tags.remove("s:shipment")
+            player.notes.pop("Shipment")
 
 class BuyResource(Action):
     def __init__(self, player, resource_name, resource_value):

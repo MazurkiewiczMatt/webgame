@@ -19,8 +19,9 @@ class TempleShelterAction(Action):
         else:
             if player.money >= 2:
                 player.money -= 2
+                world.message = f"You paid 2 coins."
                 toss = random.randint(1, 100)
-                if toss < 35:
+                if toss < 25:
                     possible_quests = []
                     if "temple-mysteriouswhisper" not in player.tags:
                         possible_quests.append("q:temple-mysteriouswhisper")
@@ -30,9 +31,9 @@ class TempleShelterAction(Action):
                         quest = random.choice(possible_quests)
                         player.tags.append("in-quest")
                         player.tags.append(quest)
-                        world.message = "Something happened..."
+                        world.message += "  \r Something happened..."
                         return None
-                world.message = (":blue-background[You spend the night listening to prayers.]")
+                world.message += ("  \r :blue-background[You spend the night listening to prayers.]")
                 energy_boost = random.randint(25, 50)
                 player.personality["Energy"] += energy_boost
                 player.personality["Energy"] = min(100, player.personality["Energy"])

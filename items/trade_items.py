@@ -15,7 +15,7 @@ class SilverIngot(Item):
         self.name = "Silver ingot"
         self.image_path = "items/img/silver-ingot.jpg"
 
-@register_item("sxotic-fish")
+@register_item("exotic-fish")
 class ExoticFish(Item):
     def __init__(self):
         super().__init__()

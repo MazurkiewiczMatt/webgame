@@ -21,7 +21,7 @@ class EaglefolkSelection(Action):
         super().__init__()
         self.content = (
             "**Eaglefolk**. Citizens of Playfair. Industrious and intelligent, they form the middle "
-            "class.  \r  \r :bar_chart: **Abilities**:  \r Strength: 20+2d10  \r Wisdom: 20+2d10  \r "
+            "class.  \r  \r :bar_chart: **Abilities**:  \r Strength: 20+2d10  \r Wisdom: 25+2d10  \r "
             "Charisma: 20+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
             "Playfair citizenship  \r  2d10 coins")
         self.image = Image.open("character/quests/img/eaglefolk.jpg")
@@ -31,7 +31,7 @@ class EaglefolkSelection(Action):
         player.race = "Eaglefolk"
         world.message = ":green-background[You selected eaglefolk as your ethnicity.]"
         player.abilities["Strength"] = 20 + random.randint(1, 10) + random.randint(1, 10)
-        player.abilities["Wisdom"] = 20 + random.randint(1, 10) + random.randint(1, 10)
+        player.abilities["Wisdom"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Charisma"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         world.message += f'  \r Strength: 20+2d10 = {player.abilities["Strength"]}.'
         world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
