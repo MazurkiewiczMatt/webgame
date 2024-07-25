@@ -20,7 +20,7 @@ class TempleShelterAction(Action):
             if player.money >= 2:
                 player.money -= 2
                 toss = random.randint(1, 100)
-                if toss < 40:
+                if toss < 35:
                     possible_quests = []
                     if "temple-mysteriouswhisper" not in player.tags:
                         possible_quests.append("q:temple-mysteriouswhisper")
