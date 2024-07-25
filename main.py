@@ -126,7 +126,7 @@ def cs_body():
             with colm2:
                 if st.session_state['world'].image is not None:
                     st.image(st.session_state['world'].image)
-            st.markdown(st.session_state['player_character'].display_notes())
+        st.markdown(st.session_state['player_character'].display_notes())
         quests = []
         quests += st.session_state['player_character'].generate_quests(st.session_state['world'])
         quests += st.session_state['world'].generate_quests(st.session_state['player_character'])

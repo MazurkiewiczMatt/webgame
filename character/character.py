@@ -29,6 +29,9 @@ class Character:
 
     def update(self, world):
 
+        if "Mysterious key" in self.notes and "temple-key" not in self.inventory:
+            self.notes.pop("Mysterious key")
+
         for ability in self.abilities:
             self.abilities[ability] = min(130, max(0, self.abilities[ability]))
         for personality in self.personality:
@@ -105,11 +108,6 @@ class Character:
         if self.name is None:
             quests.append(NameSelectionQuest())
             return quests
-
-        if len(quests) == 0:
-            self.tags.append("no-quests")
-        elif "no-quests" in self.tags:
-            self.tags.remove("no-quests")
 
         return quests
 

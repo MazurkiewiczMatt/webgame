@@ -14,8 +14,8 @@ class TempleShelterAction(Action):
     def execute(self, player, world):
         if player.personality["Faith"] < 20:
             world.message = "You are far too godless to be let into the temple."
-        elif player.personality["Faith"] < 30:
-            world.message = "You too godless to be let to the common sleeping area."
+        elif player.personality["Faith"] < 40:
+            world.message = "You too godless to be let to the common sleeping area. Return during daytime to repent."
         else:
             if player.money >= 2:
                 player.money -= 2
@@ -106,6 +106,7 @@ class ApproachMWQAction(Action):
         player.tags.append("temple-mysteriouswhisper")
         player.tags.remove("in-quest")
         super().execute(player, world)
+        player.notes["Mysterious key"] = "Ask priestess in the temple about the key gifted to you by the hooded figure at night."
 
 class IgnoreMWQAction(Action):
     def __init__(self):

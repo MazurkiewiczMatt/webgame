@@ -90,6 +90,8 @@ class TempleQuest(Quest):
                         "of intertwining vines and blossoms, symbolizing life and growth. At its heart lies a "
                         "tranquil courtyard, where a crystal-clear spring feeds into a small, sacred pool, "
                         "believed to be blessed by the goddess herself..")
+        if "temple-key" in player.inventory:
+            self.actions["ask-key"] = AskTempleKeyAction()
         self.actions["pray"] = PrayAction()
         self.actions["donate"] = DonateAction()
         self.actions["preach"] = PreachAction(player)
@@ -108,6 +110,25 @@ class PrayAction(Action):
         player.tags.remove("q:playfair_temple")
         player.tags.remove("in-quest")
         super().execute(player, world)
+
+class AskTempleKeyAction(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = "Ask the priestess about the mysterious key."
+        self.button = "Ask."
+    def execute(self, player, world):
+        if "Mysterious key" in player.notes:
+            player.notes.pop("Mysterious key")
+        world.message = ("You bring the mysterious key gifted by the hooded figure to a priestess. She is startled and "
+                         "asks where you found it. She leads you to a small chest that belonged to a late "
+                         "priest, and explains that the key was lost on the day he died. She won't let you peek "
+                         "inside or keep the contents.")
+        if "temple-key" in player.inventory:
+            player.inventory.remove("temple-key")
+            world.message += f"  \r :red-background[You lost the key.]"
+        faith_gain = random.randint(1,3)
+        player.personality["Faith"] += faith_gain
+        world.message += f"  \r :green-background[You gain {faith_gain} Faith.]"
 
 class DonateAction(Action):
     def __init__(self):

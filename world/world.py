@@ -132,11 +132,6 @@ class World:
                 quests.append(JobBoard(self.playfair_jobs))
                 quests.append(PlaceholderQuest())
 
-
-
-        if len(quests) == 0 and "no-quests" in character.tags:
-            quests.append(PlaceholderQuest())
-
         return quests
 
     def to_dict(self):
