@@ -6,6 +6,7 @@ from utils import dict_to_display_string
 from quests import PlaceholderQuest
 from .playfair.quests import NightPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest, PortQuest, AIEQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
+from .playfair.quests.shelters.temple import MysteriousWhisperQuest, StrangeDreamsQuest
 from .playfair.quests.villainry import CounterfeitDocumentsQuest, FistfightQuest, PickpocketQuest
 
 
@@ -109,6 +110,10 @@ class World:
                 return [UniversityQuest(character)]
             elif "q:aietrade" in character.tags:
                 return [AIEQuest(self.resource_prices, character)]
+            elif "q:temple-mysteriouswhisper" in character.tags:
+                return [MysteriousWhisperQuest()]
+            elif "q:temple-strangedreams" in character.tags:
+                return [StrangeDreamsQuest()]
             return []
 
         quests = []

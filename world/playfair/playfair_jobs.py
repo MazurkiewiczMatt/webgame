@@ -139,8 +139,8 @@ class QuitJobAction(Action):
             if companies[company]["employee_trait"] in player.traits:
                 player.traits.remove(companies[company]["employee_trait"])
         world.message = f":blue-background[You quit your job as {player.job[1]} at {player.job[0]}.]"
-        player.job = None
         player.tags.remove("employed")
+        player.job = None
         if "negotiated_today" in player.tags:
             player.tags.remove("negotiated_today")
 
