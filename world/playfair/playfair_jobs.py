@@ -170,7 +170,7 @@ class WorkShiftAction(Action):
                 world.message += f"  \r Boss is impressed by your work and gives you a small bonus today ({bonus})."
                 salary += bonus
             world.message += f"  \r You earned :moneybag: {salary} coins."
-            strength_bonus = random.randint(0, 2)
+            strength_bonus = random.randint(0, 1)
             if strength_bonus > 0:
                 player.abilities['Strength'] += strength_bonus
                 world.message += f"  \r  \r Your strength grew by {strength_bonus} from the physical activity."

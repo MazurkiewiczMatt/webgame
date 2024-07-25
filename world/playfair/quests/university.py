@@ -101,7 +101,7 @@ class EtiquetteClass(Action):
 
         player.tags.remove(self.tag)
         if self.current_day <= 7:
-            player.tags.append(self.tag[:18] + str(self.current_day + 1))
+            player.tags.append(self.tag[:18] + str(self.current_day))
         else:
             player.tags.remove("PU_charisma_class")
             world.message += "  \r This was the final day of the course."
@@ -131,7 +131,7 @@ class LogicClass(Action):
 
         player.tags.remove(self.tag)
         if self.current_day <= 14:
-            player.tags.append(self.tag[:22] + str(self.current_day + 1))
+            player.tags.append(self.tag[:22] + str(self.current_day))
         else:
             player.tags.remove("PU_intelligence_class")
             world.message += "  \r This was the final day of the course."
