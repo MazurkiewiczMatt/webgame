@@ -14,4 +14,5 @@ class Item:
         self.name = "Generic item"
         self.type = "Generic"
         self.description = ""
+        self.stackable = True
 

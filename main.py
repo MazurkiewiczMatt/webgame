@@ -78,11 +78,12 @@ def cs_body():
                         item_types_displayed = []
                         for i, item in enumerate(st.session_state['player_character'].inventory):
                             if item not in item_types_displayed:
-                                item_types_displayed.append(item)
+                                item_object = ITEMS_DATABASE[item]()
+                                if item_object.stackable:
+                                    item_types_displayed.append(item)
                                 with st.container(border=True):
-                                    item_object = ITEMS_DATABASE[item]()
                                     no = st.session_state['player_character'].inventory.count(item)
-                                    if no > 1:
+                                    if no > 1 and item_object.stackable:
                                         item_str = f"**({no}x) {item_object.name}**"
                                     else:
                                         item_str = f"**{item_object.name}**"
