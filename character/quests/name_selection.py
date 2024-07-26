@@ -43,13 +43,13 @@ class B(NameSelection):
     def __init__(self):
         super().__init__(
             name="Dorkas",
-            description="Named after a species of agile, swift gazelle.  \r (+1d3 Strength, *Fast*)"
+            description="Named after a species of a beautiful, awe-inspiring bird.  \r (+1d3 Strength, +10 faith)"
         )
 
     def execute(self, player, world):
         super().execute(player, world)
         player.abilities["Strength"] += random.randint(1, 3)
-        player.traits.append("Fast")
+        player.personality["Faith"] += 10
         world.message = ":green-background[You selected *Dorkas* as your name.]"
 
 class C(NameSelection):

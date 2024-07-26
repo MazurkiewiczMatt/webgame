@@ -50,13 +50,13 @@ class World:
     def update_resource_prices(self):
         for resource in self.resource_prices:
             toss = random.random()
-            if toss < 0.3:
+            if toss < 0.5:
                 price = self.resource_prices[resource]
                 self.resource_prices[resource] += random.randint(0, price//15) - price//30
-            elif toss < 0.4:
-                self.resource_prices[resource] = int(self.resource_prices[resource] * 1.1)
-            elif toss < 0.45:
-                self.resource_prices[resource] = int(self.resource_prices[resource] * 0.85)
+            elif toss < 0.65:
+                self.resource_prices[resource] = int(self.resource_prices[resource] * 1.2)
+            elif toss < 0.72:
+                self.resource_prices[resource] = int(self.resource_prices[resource] * 0.7)
             self.resource_prices[resource] = max(10, self.resource_prices[resource])
 
 

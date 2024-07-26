@@ -78,8 +78,12 @@ class ShopQuest(Quest):
     def __init__(self, items):
         super().__init__()
         self.title = "Playfair Square / The General Emporium"
+        items_in = []
         for i in range(len(items)):
-            self.actions[i] = ItemAction(items[i])
+            if items[i] not in items_in:
+                number = items.count(items[i])
+                self.actions[i] = ItemAction(items[i], number)
+                items_in.append(items[i])
         self.actions["exit"] = ExitSquareBuilding()
 
 class TempleQuest(Quest):
@@ -205,13 +209,16 @@ class ExitSquareBuilding(Action):
 
 
 class ItemAction(Action):
-    def __init__(self, item_key):
+    def __init__(self, item_key, number):
         super().__init__()
         item = ITEMS_DATABASE[item_key]()
         if item.image_path is not None:
             self.image = Image.open(item.image_path)
             self.image_size = 0.3
-        self.content = f"**{item.name}**"
+        if number == 1:
+            self.content = f"**{item.name}**"
+        else:
+            self.content = f"**({number}x) {item.name}**"
         if item.description != "":
             self.content += f": {item.description}"
         self.button = f"Buy for {item.price} coins."

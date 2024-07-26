@@ -55,12 +55,18 @@ def cs_sidebar():
         load_save(uploaded_file)
         st.write("Save loaded.")
 
-    st.sidebar.write("Dev only:")
-    if st.sidebar.button("God mode"):
+    st.sidebar.write("Debug:")
+    if st.sidebar.button("Sandbox mode."):
         st.session_state['player_character'].money = 50000
-        st.session_state['player_character'].abilities["Strength"] = 100
-        st.session_state['player_character'].abilities["Wisdom"] = 100
-        st.session_state['player_character'].abilities["Charisma"] = 100
+        st.session_state['player_character'].abilities["Strength"] = 130
+        st.session_state['player_character'].abilities["Wisdom"] = 130
+        st.session_state['player_character'].abilities["Charisma"] = 130
+        st.session_state['player_character'].personality["Energy"] = 100
+        st.session_state['player_character'].personality["Dedication"] = 100
+        st.session_state['player_character'].personality["Faith"] = 100
+    if st.sidebar.button("+1000 coins."):
+        st.session_state['player_character'].money += 1000
+
 
 
 def cs_body():

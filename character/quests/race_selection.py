@@ -22,7 +22,7 @@ class EaglefolkSelection(Action):
         self.content = (
             "**Eaglefolk**. Citizens of Playfair. Industrious and intelligent, they form the middle "
             "class.  \r  \r :bar_chart: **Abilities**:  \r Strength: 20+2d10  \r Wisdom: 25+2d10  \r "
-            "Charisma: 20+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
+            "Charisma: 25+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
             "Playfair citizenship  \r  2d10 coins")
         self.image = Image.open("character/quests/img/eaglefolk.jpg")
         self.button = "Select."
@@ -32,10 +32,10 @@ class EaglefolkSelection(Action):
         world.message = ":green-background[You selected eaglefolk as your ethnicity.]"
         player.abilities["Strength"] = 20 + random.randint(1, 10) + random.randint(1, 10)
         player.abilities["Wisdom"] = 25 + random.randint(1, 10) + random.randint(1, 10)
-        player.abilities["Charisma"] = 20 + random.randint(1, 10) + random.randint(1, 10)
+        player.abilities["Charisma"] = 25 + random.randint(1, 10) + random.randint(1, 10)
         world.message += f'  \r Strength: 20+2d10 = {player.abilities["Strength"]}.'
-        world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
-        world.message += f'  \r Charisma: 20+2d10 = {player.abilities["Charisma"]}.'
+        world.message += f'  \r Wisdom: 25+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 25+2d10 = {player.abilities["Charisma"]}.'
         player.traits.append("Playfair Citizen")
         player.money += random.randint(1, 10) + random.randint(1, 10)
 
@@ -44,10 +44,10 @@ class BoarfolkSelection(Action):
     def __init__(self):
         super().__init__()
         self.content = (
-            "**Boarfolk**. Merchants and craftsmen of Playfair. Eager to earn wages or comission. Impervious to exhaustion "
-            "and diesease.  \r  \r :bar_chart: **Abilities**:  \r Strength: 25+2d10  \r Wisdom: 25+2d10  \r "
-            "Charisma: 15+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
-            "Resilient  \r  1d10 coins")
+            "**Boarfolk**. Nomadic merchants and craftsmen. Eager to earn wages or comission. Impervious to exhaustion "
+            "and diesease.  \r  \r :bar_chart: **Abilities**:  \r Strength: 25+2d10  \r Wisdom: 15+2d10  \r "
+            "Charisma: 30+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
+            "  4d10 coins")
         self.image = Image.open("character/quests/img/boarfolk.jpg")
         self.button = "Select."
 
@@ -55,13 +55,12 @@ class BoarfolkSelection(Action):
         player.race = "Boarfolk"
         world.message = ":green-background[You selected boarfolk as your ethnicity.]"
         player.abilities["Strength"] = 25 + random.randint(1, 10) + random.randint(1, 10)
-        player.abilities["Wisdom"] = 25 + random.randint(1, 10) + random.randint(1, 10)
-        player.abilities["Charisma"] = 15 + random.randint(1, 10) + random.randint(1, 10)
+        player.abilities["Wisdom"] = 15 + random.randint(1, 10) + random.randint(1, 10)
+        player.abilities["Charisma"] = 30 + random.randint(1, 10) + random.randint(1, 10)
         world.message += f'  \r Strength: 25+2d10 = {player.abilities["Strength"]}.'
-        world.message += f'  \r Wisdom: 25+2d10 = {player.abilities["Wisdom"]}.'
-        world.message += f'  \r Charisma: 15+2d10 = {player.abilities["Charisma"]}.'
-        player.money += random.randint(1, 10)
-        player.traits.append("Resilient")
+        world.message += f'  \r Wisdom: 15+2d10 = {player.abilities["Wisdom"]}.'
+        world.message += f'  \r Charisma: 30+2d10 = {player.abilities["Charisma"]}.'
+        player.money += random.randint(1, 10) + random.randint(1, 10) + random.randint(1, 10) + random.randint(1, 10)
 
 
 class LionfolkSelection(Action):
@@ -71,7 +70,7 @@ class LionfolkSelection(Action):
             "**Lionfolk**. Citizens of Playfair. Highly estemeed race of statesmen and philosophers. "
             "It made some of greatest warriors of the realm.  \r  \r :bar_chart: **Abilities**:  \r Strength: 25+2d10  \r Wisdom: 20+2d10  \r "
             "Charisma: 25+2d10  \r  \r :chart_with_upwards_trend: **Advantages**:  \r "
-            "Playfair citizenship  \r  1d10 coins")
+            "Playfair citizenship  \r  3d10 coins")
         self.image = Image.open("character/quests/img/lionfolk.jpg")
         self.button = "Select."
 
@@ -85,14 +84,14 @@ class LionfolkSelection(Action):
         world.message += f'  \r Wisdom: 20+2d10 = {player.abilities["Wisdom"]}.'
         world.message += f'  \r Charisma: 25+2d10 = {player.abilities["Charisma"]}.'
         player.traits.append("Playfair Citizen")
-        player.money += random.randint(1, 10)
+        player.money += random.randint(1, 10) + random.randint(1, 10) + random.randint(1, 10)
 
 
 class OxfolkSelection(Action):
     def __init__(self):
         super().__init__()
         self.content = (
-            "**Oxfolk**. Workers of Playfair. They struggle, dependent for employment on higher casts."
+            "**Oxfolk**. Workers of Playfair. They are dependent for employment on higher casts. Lacking citizenship, many oxfolk face discrimation in Playfair City."
             "  \r  \r :bar_chart: **Abilities**:  \r Strength: 40+2d10  \r Wisdom: 20+2d10  \r "
             "Charisma: 15+2d10")
         self.image = Image.open("character/quests/img/oxfolk.jpg")
