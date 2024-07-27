@@ -132,7 +132,7 @@ class StudentQuest(Quest):
                 self.content += " Come back in the afternoon to participate."
 
         if player.degree is not None:
-            self.content += f"  \r :blue-background[You are enrolled in {player.degree['name']}."
+            self.content += f"  \r :blue-background[You are enrolled in {player.degree['name']}.]"
             self.actions["degree"] = DegreeClass(player)
 
 
