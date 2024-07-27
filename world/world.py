@@ -126,7 +126,7 @@ class World:
                 quests.append(ShelterPlayfairQuest())
             else:
                 quests += self.missions
-                if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags:
+                if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags or (character.degree is not None and character.degree["place"] == "The City of Playfair"):
                     quests.append(StudentQuest(character, self.state["Time of day"]))
                 if "employed" in character.tags and character.job is not None:
                     quests.append(EmploymentQuest(character, self.state["Day"]))

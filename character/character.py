@@ -25,6 +25,7 @@ class Character:
         self.inventory = []
         self.money = 0
         self.job = None
+        self.degree = None
 
 
     def update(self, world):
@@ -153,6 +154,7 @@ class Character:
             "inventory": self.inventory,
             "money": self.money,
             "job": self.job,
+            "degree": self.degree,
         }
 
     @classmethod
@@ -177,6 +179,7 @@ class Character:
         char.inventory = data.get("inventory", [])
         char.money = data.get("money", 0)
         char.job = data.get("job", None)
+        char.job = data.get("degree", None)
         return char
 
 

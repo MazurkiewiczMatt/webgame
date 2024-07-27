@@ -47,12 +47,12 @@ class Nootropic(Potion):
         super().__init__()
         self.type = "potion"
         self.name = "Nootropic Potion"
-        self.price = 10
+        self.price = 20
         self.image_path = "items/img/nootropic.png"
         self.description = "Increases Wisdom by 1-5."
 
     def use(self, player, world):
-        wisdom_bonus = random.randint(1, 5)
+        wisdom_bonus = min(random.randint(1, 5), random.randint(1, 10))
         player.abilities["Wisdom"] += wisdom_bonus
         world.message = f"After drinking the nootropic potion, :green-background[your wisdom increased by {wisdom_bonus}.]"
 
