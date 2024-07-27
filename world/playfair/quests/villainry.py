@@ -19,8 +19,8 @@ class BuyDocumentsAction(Action):
         super().__init__()
         self.content = "Agree to buy the documents."
         self.button = "Pay 20 coins."
-        self.image = Image.open("world/img/actions/shady_agreement.jpg")
-        self.image_size = 0.4
+        # self.image = Image.open("world/img/actions/shady_agreement.jpg")
+        # self.image_size = 0.4
 
     def execute(self, player, world):
         if player.money >= 20:
@@ -47,7 +47,7 @@ class RefuseAction(Action):
         super().__init__()
         self.content = "Do not pay any attention."
         self.button = "Walk away."
-        self.image_size = 0.4
+        # self.image_size = 0.4
         self.quest_name = quest_name
 
     def execute(self, player, world):
@@ -61,8 +61,8 @@ class ReportAction(Action):
         super().__init__()
         self.content = "Report it to authorities."
         self.button = "Report."
-        self.image = Image.open("world/img/actions/guards.jpg")
-        self.image_size = 0.4
+        # self.image = Image.open("world/img/actions/guards.jpg")
+        # self.image_size = 0.4
         self.quest_name = quest_name
 
     def execute(self, player, world):
@@ -93,8 +93,8 @@ class FightAction(Action):
         super().__init__()
         self.content = "Show them who is the strongest."
         self.button = "Join fight."
-        self.image = Image.open("world/img/actions/fistfight.png")
-        self.image_size = 0.4
+        # self.image = Image.open("world/img/actions/fistfight.png")
+        # self.image_size = 0.4
 
     def execute(self, player, world):
         toss = random.randint(1, 100)
@@ -131,8 +131,8 @@ class AcceptBribeAction(Action):
         super().__init__()
         self.content = "You agree to the terms."
         self.button = "Take the money."
-        self.image = Image.open("world/img/actions/shady_agreement.jpg")
-        self.image_size = 0.4
+        # self.image = Image.open("world/img/actions/shady_agreement.jpg")
+        # self.image_size = 0.4
 
     def execute(self, player, world):
         degeneracy_gain = random.randint(2, 6)

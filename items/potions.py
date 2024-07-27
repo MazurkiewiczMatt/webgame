@@ -54,7 +54,11 @@ class Nootropic(Potion):
     def use(self, player, world):
         wisdom_bonus = min(random.randint(1, 5), random.randint(1, 10))
         player.abilities["Wisdom"] += wisdom_bonus
-        world.message = f"After drinking the nootropic potion, :green-background[your wisdom increased by {wisdom_bonus}.]"
+        world.message += f"  \r  \r After drinking the nootropic potion, :green-background[your wisdom increased by {wisdom_bonus}.]"
+        energy_loss = random.randint(20, 40)
+        player.personality["Energy"] -= energy_loss
+        player.personality["Energy"] = max(0, player.personality["Energy"])
+        world.message += f"  \r It was exhausting, you lost {energy_loss} Energy"
 
 @register_item("energy_drink")
 class EnergyDrink(Potion):
