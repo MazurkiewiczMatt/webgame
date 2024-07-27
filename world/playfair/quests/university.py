@@ -174,7 +174,7 @@ class DegreeClass(Action):
         self.button = "Study."
 
     def execute(self, player, world):
-        world.message = f"You studied at Playfair University for the {player.degree["name"]}."
+        world.message = f"You studied at Playfair University for the {player.degree['name']}."
 
         charisma_gain = player.degree['charisma_gain']
         player.abilities["Charisma"] += charisma_gain
