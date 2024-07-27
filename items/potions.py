@@ -58,7 +58,7 @@ class Nootropic(Potion):
         energy_loss = random.randint(20, 40)
         player.personality["Energy"] -= energy_loss
         player.personality["Energy"] = max(0, player.personality["Energy"])
-        world.message += f"  \r It was exhausting, you lost {energy_loss} Energy"
+        world.message += f"  \r It was exhausting, you lost {energy_loss} Energy."
 
 @register_item("energy_drink")
 class EnergyDrink(Potion):
