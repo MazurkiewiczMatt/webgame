@@ -60,6 +60,26 @@ class Nootropic(Potion):
         player.personality["Energy"] = max(0, player.personality["Energy"])
         world.message += f"  \r It was exhausting, you lost {energy_loss} Energy."
 
+
+@register_item("hypertrophy-potion")
+class HypertrophyPotion(Potion):
+    def __init__(self):
+        super().__init__()
+        self.type = "potion"
+        self.name = "Hypertrophy Potion"
+        self.price = 10
+        self.image_path = "items/img/nootropic.png"
+        self.description = "Increases Strength by 1-4."
+
+    def use(self, player, world):
+        strength_bonus = min(random.randint(1, 4), random.randint(1, 10))
+        player.abilities["Strength"] += strength_bonus
+        world.message += f"  \r  \r After drinking the hypertrophy potion, :green-background[your strength increased by {strength_bonus}.]"
+        energy_loss = random.randint(20, 40)
+        player.personality["Energy"] -= energy_loss
+        player.personality["Energy"] = max(0, player.personality["Energy"])
+        world.message += f"  \r It was exhausting, you lost {energy_loss} Energy."
+
 @register_item("energy_drink")
 class EnergyDrink(Potion):
     def __init__(self):
