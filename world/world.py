@@ -59,7 +59,7 @@ class World:
         }
 
     def replenish_store(self):
-        self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic", "hypertrophy-potion"], weights=[0.5, 0.20, 0.15, 0.15])[0] for _
+        self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic", "hypertrophy-potion"], weights=[0.4, 0.2, 0.2, 0.2])[0] for _
                                in range(8)]
 
     def update_resource_prices(self):
