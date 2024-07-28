@@ -5,7 +5,7 @@ from PIL import Image
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
 from .playfair.quests import ShelterPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, \
-    StudentQuest, PortQuest, AIEQuest
+    StudentQuest, PortQuest, AIEQuest, PatriciansPalace
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
 from .playfair.quests.shelters.hotel import HotelOfferQuest
 from .playfair.quests.shelters.temple import MysteriousWhisperQuest, StrangeDreamsQuest
@@ -33,7 +33,6 @@ class World:
                         'Wisdom': None,
                         'Strength': None,
                         'Action': "Plead for a job.",
-                        'Days_since_raise': 0,
                         'Raise_possible': False},
             "quarry": {'Employer': "Playfair Quarry",
                        'Title': "Manual worker",
@@ -41,8 +40,16 @@ class World:
                        'Wisdom': None,
                        'Strength': 30,
                        'Action': "Ask for a job.",
-                       'Days_since_raise': 0,
                        'Raise_possible': True},
+            "hospital": {'Employer': "Playfair Hospital",
+                         'Title': "Physician",
+                         'Salary': 100,
+                         'Wisdom': None,
+                         'Strength': None,
+                         'Action': "Request a placement.",
+                         'Raise_possible': True,
+                         'Requirements': ["Licensed Physician"],
+                         },
             "corpo1": generate_corpo_job(),
             "corpo2": generate_corpo_job(),
         }
@@ -59,8 +66,10 @@ class World:
         }
 
     def replenish_store(self):
-        self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic", "hypertrophy-potion"], weights=[0.4, 0.2, 0.2, 0.2])[0] for _
-                               in range(8)]
+        self.playfair_store = [
+            random.choices(["beer", "energy_drink", "nootropic", "hypertrophy-potion"], weights=[0.4, 0.2, 0.2, 0.2])[0]
+            for _
+            in range(8)]
 
     def update_resource_prices(self):
         for resource in self.resource_prices:
@@ -131,6 +140,8 @@ class World:
                 return [StrangeDreamsQuest()]
             elif "q:hotel_offer" in character.tags:
                 return [HotelOfferQuest(self.resource_prices)]
+            elif "q:playfair_palace" in character.tags:
+                return [PatriciansPalace(character)]
             return []
 
         quests = []

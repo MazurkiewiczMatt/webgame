@@ -68,7 +68,7 @@ class HypertrophyPotion(Potion):
         self.type = "potion"
         self.name = "Hypertrophy Potion"
         self.price = 10
-        self.image_path = "items/img/nootropic.png"
+        self.image_path = "items/img/hypertrophy.png"
         self.description = "Increases Strength by 1-4."
 
     def use(self, player, world):

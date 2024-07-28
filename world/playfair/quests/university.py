@@ -2,7 +2,7 @@ from PIL import Image
 import random
 
 from quests import Quest, Action
-from .square import ExitSquareBuilding
+from world.playfair.quests.square.square import ExitSquareBuilding
 
 
 class UniversityQuest(Quest):
@@ -28,21 +28,28 @@ class UniversityQuest(Quest):
         else:
             self.content += "  \r  :green-background[You graduated from the logic class.]"
 
+        if "Medicine Associate" in player.traits:
+            self.content += "  \r  :green-background[You graduated the associate program in medicine.]"
+        else:
+            if player.degree is None:
+                self.actions["medicine"] = AssociateMedicine()
+
         if "Theology Associate" in player.traits:
             self.content += "  \r  :green-background[You graduated the associate program in theology.]"
         else:
             if player.degree is None:
                 self.actions["theology"] = AssociateTheology()
 
-
         self.actions["exit"] = ExitSquareBuilding()
+
 
 class EtiquetteCourse(Action):
     def __init__(self):
         super().__init__()
-        self.content = ("A **one-week** course with classes every **morning**. Teaches basics of etiquette and diplomacy,"
-                        " increasing Charisma of the participant by anywhere between 7 and 21. "
-                        "  \r :moneybag: :blue-background[Cost 50 for Playfair Citizens, 100 for non-citizens]")
+        self.content = (
+            "A **one-week** course with classes every **morning**. Teaches basics of etiquette and diplomacy,"
+            " increasing Charisma of the participant by anywhere between 7 and 21. "
+            "  \r :moneybag: :blue-background[Cost 50 for Playfair Citizens, 100 for non-citizens]")
         self.button = "Enroll."
         self.image = Image.open("world/img/actions/charisma_class.jpg")
         self.image_size = 0.4
@@ -57,6 +64,7 @@ class EtiquetteCourse(Action):
             player.tags.append("PU_charisma_class")
             player.tags.append("PU_charisma_class_0")
             world.message = f":green-background[You paid {fee} to enroll in etiquette class at Playfair University.]"
+
 
 class LogicCourse(Action):
     def __init__(self):
@@ -79,15 +87,55 @@ class LogicCourse(Action):
             player.tags.append("PU_intelligence_class_0")
             world.message = f":green-background[You paid {fee} to enroll in logic class at Playfair University.]"
 
+
+class AssociateMedicine(Action):
+    def __init__(self):
+        super().__init__()
+        self.content = (
+            ":blue-background[Associate degree in Medicine.] A **30 classes** associate degree, educating an aspiring "
+            "medical profesional and enabling them to register at Patrician's Palace as a licensed physician. Through "
+            "rigotous coursework the student develops their Wisdom by 30. Upon graduation, "
+            "successful students obtain"
+            "a diploma certifying having"
+            "obtained the formal training in medicine."
+            "  \r :moneybag: :blue-background[Cost 300 for Playfair Citizens, 700 for non-citizens]"
+            "  \r Requires 45 Wisdom to enroll.")
+        self.button = "Enroll."
+        self.image = Image.open("world/img/actions/medicine.jpg")
+        self.image_size = 0.4
+
+    def execute(self, player, world):
+        if player.abilities["Wisdom"] >= 45:
+            if "Playfair Citizen" in player.traits:
+                fee = 300
+            else:
+                fee = 700
+            if player.money > fee:
+                player.money -= fee
+                player.degree = {
+                    "name": "Associate Degree in Medicine",
+                    "place": "The City of Playfair",
+                    "total_days": 30,
+                    "current_day": 1,
+                    "wisdom_gain": 1,
+                    "title": "Medicine Associate",
+                }
+                world.message = (f":green-background[You paid {fee} to enroll in associate degree in medicine at "
+                                 f"Playfair University.]")
+        else:
+            world.message = ":red-background[You don't have sufficient wisdom to enroll in this degree.]"
+
+
 class AssociateTheology(Action):
     def __init__(self):
         super().__init__()
-        self.content = (":blue-background[Associate degree in Theology.] A **30 classes** associate degree, consisting of theology, philosophy, and rhetoric classes. "
-                        "Through seminars, assignments and debates the student develops their Wisdom, Charisma,"
-                        "and Faith by 30. Upon graduation, successful students obtain a diploma certifying having "
-                        "obtained the formal training in theology."
-                        "  \r :moneybag: :blue-background[Cost 300 for Playfair Citizens, 700 for non-citizens]"
-                        "  \r Requires 40 Wisdom to enroll.")
+        self.content = (
+            ":blue-background[Associate degree in Theology.] A **30 classes** associate degree, consisting of theology, philosophy, and rhetoric classes. "
+            "Through seminars, assignments and debates the student develops their Wisdom, Charisma,"
+            "and Faith by 30. Upon graduation, successful students obtain a diploma certifying having "
+            "obtained the formal training in theology."
+            "  \r :moneybag: :blue-background[Cost 300 for Playfair Citizens, 700 for non-citizens]"
+            "  \r Requires 40 Wisdom to enroll.")
         self.button = "Enroll."
         self.image = Image.open("world/img/places/temple.jpg")
         self.image_size = 0.4
@@ -108,10 +156,12 @@ class AssociateTheology(Action):
                     "wisdom_gain": 1,
                     "charisma_gain": 1,
                     "faith_gain": 1,
+                    "title": "Theology Associate"
                 }
                 world.message = f":green-background[You paid {fee} to enroll in associate degree in theology at Playfair University.]"
         else:
             world.message = ":red-background[You don't have sufficient wisdom to enroll in this degree.]"
+
 
 class StudentQuest(Quest):
     def __init__(self, player, time_of_day):
@@ -176,22 +226,25 @@ class DegreeClass(Action):
     def execute(self, player, world):
         world.message = f"You studied at Playfair University for the {player.degree['name']}."
 
-        charisma_gain = player.degree['charisma_gain']
-        player.abilities["Charisma"] += charisma_gain
-        world.message += f"  \r :green-background[You gained {charisma_gain} Charisma.]"
+        if 'charisma_gain' in player.degree:
+            charisma_gain = player.degree['charisma_gain']
+            player.abilities["Charisma"] += charisma_gain
+            world.message += f"  \r :green-background[You gained {charisma_gain} Charisma.]"
 
-        wisdom_gain = player.degree['wisdom_gain']
-        player.abilities["Wisdom"] += wisdom_gain
-        world.message += f"  \r :green-background[You gained {wisdom_gain} Wisdom.]"
+        if 'wisdom_gain' in player.degree:
+            wisdom_gain = player.degree['wisdom_gain']
+            player.abilities["Wisdom"] += wisdom_gain
+            world.message += f"  \r :green-background[You gained {wisdom_gain} Wisdom.]"
 
-        faith_gain = player.degree['faith_gain']
-        player.personality["Faith"] += faith_gain
-        world.message += f"  \r :green-background[You gained {faith_gain} Faith.]"
+        if 'faith_gain' in player.degree:
+            faith_gain = player.degree['faith_gain']
+            player.personality["Faith"] += faith_gain
+            world.message += f"  \r :green-background[You gained {faith_gain} Faith.]"
 
         if player.degree['current_day'] < player.degree['total_days']:
             player.degree['current_day'] += 1
         else:
-            player.traits.append("Theology Associate")
+            player.traits.append(player.degree['title'])
             player.degree = None
             world.message += "  \r This was the final day of the course."
 

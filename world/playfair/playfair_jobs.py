@@ -39,7 +39,6 @@ def generate_corpo_job():
                 'Wisdom': intelligence_requirement,
                 'Strength': None,
                 'Action': "Apply for the job.",
-                'Days_since_raise': 0,
                 'Raise_possible': True}
     return job_dict
 
@@ -60,7 +59,12 @@ class JobAction(Action):
 
         self.content = (
             f":blue-background[**{job['Title']}** at {job['Employer']}.] {companies[job['Employer']]['short_description']}"
-            f"  \r :moneybag: {job['Salary']} coins/shift")
+            f"  \r   \r :moneybag: {job['Salary']} coins/shift  \r ")
+        if 'Requirements' in job:
+            for req in job['Requirements']:
+                if req == "Licensed Physician":
+                    self.content += ("  \r This job requires to be a licensed physician, with documents possible to "
+                                     "obtain at Patrician's Palace.")
         if job['Strength'] is not None:
             self.content += f"  \r :muscle: Only robust workmen (*{job['Strength']}+ Strength*) will be considered."
         if job['Wisdom'] is not None:
@@ -93,11 +97,22 @@ class InterviewQuest(Quest):
                 "  \r  \r :red-background[The interviewer evaluates your posture and sees that you are too weak to handle the demands of the job.] Apply again later.")
             self.actions["exit"] = ExitInterviewAction("Too bad.", job_key)
         else:
-            self.content += (
-                "  \r  \r :green-background[The interviewer asks you a few question and seems satisfied with your answers.] They"
-                " put forth an offer.")
-            self.actions["accept"] = TakeJobAction(job_key, job)
-            self.actions["exit"] = ExitInterviewAction("I changed my mind.", job_key)
+            passed = True
+            if 'Requirements' in job:
+                for req in job['Requirements']:
+                    if req == "Licensed Physician" and "Licensed Physician" not in player.traits:
+                        passed = False
+                        self.content += (
+                            "\r  \r :red-background[The interviewer is disappointed in your lack of credentials.] Apply "
+                            "again with permission of Patrician.")
+                        self.actions["exit"] = ExitInterviewAction("Too bad.", job_key)
+
+            if passed:
+                self.content += (
+                    "  \r  \r :green-background[The interviewer asks you a few question and seems satisfied with your answers.] They"
+                    " put forth an offer.")
+                self.actions["accept"] = TakeJobAction(job_key, job)
+                self.actions["exit"] = ExitInterviewAction("I changed my mind.", job_key)
 
 
 class ExitInterviewAction(Action):
@@ -125,7 +140,10 @@ class TakeJobAction(Action):
         for company in companies:
             if companies[company]["employee_trait"] in player.traits:
                 player.traits.remove(companies[company]["employee_trait"])
-        player.job = world.playfair_jobs[self.key]
+        new_job = world.playfair_jobs[self.key]
+        new_job['Last_raise'] = world.state["Day"]
+        player.job = new_job
+
         player.traits.append(companies[world.playfair_jobs[self.key]['Employer']]["employee_trait"])
         player.tags.append("employed")
         world.message = f":green-background[You got hired as {world.playfair_jobs[self.key]['Title']} at {world.playfair_jobs[self.key]['Employer']}]"
@@ -137,7 +155,7 @@ class EmploymentQuest(Quest):
     def __init__(self, player, current_day):
         super().__init__()
         if player.job is not None:
-            days_at_job = current_day - player.job['Days_since_raise']
+            days_at_job = current_day - player.job['Last_raise']
             self.title = f"Employment at {player.job['Employer']}"
             self.content = (
                 f"Job: :blue-background[{player.job['Title']}]  \r :moneybag: Salary: {player.job['Salary']} coins/shift  "
@@ -236,7 +254,7 @@ class NegotiateRaiseAction(Action):
             old_salary = player.job['Salary']
             bonus = min(20, random.randint(1, 3) + old_salary // 15)
             player.job['Salary'] = old_salary + bonus
-            player.job['Days_since_raise'] = world.state["Day"]
+            player.job['Last_raise'] = world.state["Day"]
             world.message = f":green-background[You successfully negotiated a raise by {bonus} coins per shift!]  \r :moneybag: Salary at {player.job['Employer']}: {old_salary} => {player.job['Salary']}"
         else:
             world.message = f":red-background[You did not manage to get a raise.]"

@@ -4,7 +4,8 @@ from PIL import Image
 
 from quests import Quest, Action
 from items import ITEMS_DATABASE
-
+from .palace import PalaceAction
+from .exit import ExitSquareBuilding
 
 
 class PlayfairSquare(Quest):
@@ -19,9 +20,12 @@ class PlayfairSquare(Quest):
             self.content = ("By afternoon, Playfair Square is alive with energy and color, bathed in the warm, "
                             "golden hues of the sun. A gentle breeze rustles the leaves, and the fountain at the "
                             "center of the square sparkles in the sunlight.")
-        self.content += ("\r  \r The Playfair Square boasts a :blue-background[shop (open only in the mornings)], "
-                         "a :blue-background[temple (open through day, and offering"
-                         " cheap shelter at night)], and university (reception for non-students only in afternoons).")
+        self.content += ("\r  \r The Playfair Square boasts:"
+                         "  \r - a shop (open only in the mornings), "
+                         "  \r - a temple (open through day, and offering cheap shelter at night), "
+                         "  \r - a university (reception for non-students only in afternoons)."
+                         "  \r - the Patrician's Palace for legal and civil affairs."
+                         "  \r ")
         if city_state["Time of day"] == "Morning":
             self.actions["shop"] = ShopAction()
         else:
@@ -31,10 +35,7 @@ class PlayfairSquare(Quest):
             self.content += "  \r The university reception is now :red-background[closed]."
         else:
             self.actions["PU"] = UniversityAction()
-
-
-
-
+        self.actions["palace"] = PalaceAction()
 
 
 class ShopAction(Action):
@@ -44,6 +45,7 @@ class ShopAction(Action):
                         "either a passing adventurer or Playfair denizen may need.")
         self.button = "Shop."
         self.image = Image.open("world/img/places/shop.jpg")
+
     def execute(self, player, world):
         player.tags.append("in-quest")
         player.tags.append("q:playfair_shop")
@@ -55,12 +57,14 @@ class TempleAction(Action):
         self.content = "A temple dedicated to a goddess of vitality."
         self.button = "Enter."
         self.image = Image.open("world/img/places/temple.jpg")
+
     def execute(self, player, world):
         if player.personality["Faith"] < 20:
             world.message = ":red-background[You are too faithless to be let into the temple.]"
         else:
             player.tags.append("in-quest")
             player.tags.append("q:playfair_temple")
+
 
 class UniversityAction(Action):
     def __init__(self):
@@ -69,6 +73,7 @@ class UniversityAction(Action):
                         "degrees.")
         self.button = "Enter."
         self.image = Image.open("world/img/places/university.jpg")
+
     def execute(self, player, world):
         player.tags.append("in-quest")
         player.tags.append("q:playfair_university")
@@ -86,6 +91,7 @@ class ShopQuest(Quest):
                 items_in.append(items[i])
         self.actions["exit"] = ExitSquareBuilding()
 
+
 class TempleQuest(Quest):
     def __init__(self, player):
         super().__init__()
@@ -102,24 +108,28 @@ class TempleQuest(Quest):
         self.actions["renounce"] = RenounceAction()
         self.actions["exit"] = ExitSquareBuilding()
 
+
 class PrayAction(Action):
     def __init__(self):
         super().__init__()
         self.content = "Join a three-hours-long mass. (Increases Faith)"
         self.button = "Pray."
+
     def execute(self, player, world):
-        faith_bonus = random.randint(1,6)
+        faith_bonus = random.randint(1, 6)
         player.personality["Faith"] += faith_bonus
         world.message = f":green-background[Your Faith increases by {faith_bonus}.]"
         player.tags.remove("q:playfair_temple")
         player.tags.remove("in-quest")
         super().execute(player, world)
 
+
 class AskTempleKeyAction(Action):
     def __init__(self):
         super().__init__()
         self.content = "Ask the priestess about the mysterious key."
         self.button = "Ask."
+
     def execute(self, player, world):
         if "Mysterious key" in player.notes:
             player.notes.pop("Mysterious key")
@@ -130,28 +140,31 @@ class AskTempleKeyAction(Action):
         if "temple-key" in player.inventory:
             player.inventory.remove("temple-key")
             world.message += f"  \r :red-background[You lost the key.]"
-        faith_gain = random.randint(1,3)
+        faith_gain = random.randint(1, 3)
         player.personality["Faith"] += faith_gain
         world.message += f"  \r :green-background[You gain {faith_gain} Faith.]"
+
 
 class DonateAction(Action):
     def __init__(self):
         super().__init__()
         self.content = "Be generous towards renovation of a praying area. (Increases Faith)"
         self.button = "Donate 10 coins."
+
     def execute(self, player, world):
         if player.money > 10:
             player.money -= 10
-            faith_bonus = random.randint(1,6)
+            faith_bonus = random.randint(1, 6)
             player.personality["Faith"] += faith_bonus
             world.message = f"You donate 10 coins and :green-background[your Faith increases by {faith_bonus}.]"
         else:
             world.message = f":red-background[You don't have enough to donate.]"
 
+
 class PreachAction(Action):
     def __init__(self, player):
         super().__init__()
-        odds = (player.personality["Faith"] + player.abilities["Charisma"])//2 - 30
+        odds = (player.personality["Faith"] + player.abilities["Charisma"]) // 2 - 30
         self.content = f'Start preaching to the crowd.  \r Odds of success: {odds}% ([{player.personality["Faith"]} Faith + {player.abilities["Charisma"]} Charisma]/2 - 30)'
         self.button = "Preach."
         self.odds = odds
@@ -178,34 +191,21 @@ class PreachAction(Action):
         player.tags.remove("in-quest")
         super().execute(player, world)
 
+
 class RenounceAction(Action):
     def __init__(self):
         super().__init__()
         self.content = "Publicly renounce the goddess. (Decreases Faith)"
         self.button = "Renounce."
+
     def execute(self, player, world):
-        faith_bonus = random.randint(6,14)
+        faith_bonus = random.randint(6, 14)
         player.personality["Faith"] -= faith_bonus
         world.message = f":red-background[Your Faith decreases by {faith_bonus}.]"
         player.tags.remove("q:playfair_temple")
         player.tags.remove("in-quest")
         super().execute(player, world)
 
-class ExitSquareBuilding(Action):
-    def __init__(self):
-        super().__init__()
-        self.button = "Exit."
-
-    def execute(self, player, world):
-        player.tags.remove("in-quest")
-        if "q:playfair_shop" in player.tags:
-            player.tags.remove("q:playfair_shop")
-        if "q:playfair_temple" in player.tags:
-            player.tags.remove("q:playfair_temple")
-        if "q:playfair_university" in player.tags:
-            player.tags.remove("q:playfair_university")
-        if "q:aietrade" in player.tags:
-            player.tags.remove("q:aietrade")
 
 
 class ItemAction(Action):

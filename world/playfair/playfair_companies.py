@@ -49,6 +49,16 @@ companies = {
         "Patrician's Palace, located in the heart of the City, is a grand residence requiring constant upkeep. The palace grounds include luxurious gardens and buildings where numerous servants work tirelessly to ensure the comfort and satisfaction of the city's elite."
     ),
     "employee_trait": "Palace Servant"
+},
+"Playfair Hospital": {
+    "name": "Playfair Hospital",
+    "image_path": "world/img/companies/hospital.jpg",
+    "short_description": "The hospital seeks skilled physicians to provide medical care and improve the health of the city's denizens.",
+    "long_description": (
+        "Playfair Hospital, situated in a central location of the City, is renowned for its medical facilities and dedicated staff. The hospital spans several buildings, offering various specialized departments and advanced medical care to all who need it."
+    ),
+    "employee_trait": "Hospital Employee"
 }
+
 
 }
