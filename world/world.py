@@ -4,7 +4,8 @@ from PIL import Image
 
 from utils import dict_to_display_string
 from quests import PlaceholderQuest
-from .playfair.quests import ShelterPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, StudentQuest, PortQuest, AIEQuest
+from .playfair.quests import ShelterPlayfairQuest, PlayfairSquare, ShopQuest, TempleQuest, UniversityQuest, \
+    StudentQuest, PortQuest, AIEQuest
 from .playfair.playfair_jobs import JobBoard, generate_corpo_job, InterviewQuest, EmploymentQuest
 from .playfair.quests.shelters.hotel import HotelOfferQuest
 from .playfair.quests.shelters.temple import MysteriousWhisperQuest, StrangeDreamsQuest
@@ -26,11 +27,24 @@ class World:
         self.image = Image.open(self.image_path)
 
         self.playfair_jobs = {
-            "quarry": ("Playfair Quarry", "Manual worker", 6, None, "Ask for a job."),
-            "corpo1": (generate_corpo_job()),
-            "corpo2": (generate_corpo_job()),
-            "corpo3": (generate_corpo_job()),
-            "corpo4": (generate_corpo_job()),
+            "servant": {'Employer': "Patrician's Palace",
+                        'Title': "Servant",
+                        'Salary': 4,
+                        'Wisdom': None,
+                        'Strength': None,
+                        'Action': "Plead for a job.",
+                        'Days_since_raise': 0,
+                        'Raise_possible': False},
+            "quarry": {'Employer': "Playfair Quarry",
+                       'Title': "Manual worker",
+                       'Salary': 6,
+                       'Wisdom': None,
+                       'Strength': 30,
+                       'Action': "Ask for a job.",
+                       'Days_since_raise': 0,
+                       'Raise_possible': True},
+            "corpo1": generate_corpo_job(),
+            "corpo2": generate_corpo_job(),
         }
 
         self.playfair_store = []
@@ -45,20 +59,20 @@ class World:
         }
 
     def replenish_store(self):
-        self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic"], weights=[0.5, 0.25, 0.25])[0] for _ in range(6)]
+        self.playfair_store = [random.choices(["beer", "energy_drink", "nootropic"], weights=[0.5, 0.25, 0.25])[0] for _
+                               in range(6)]
 
     def update_resource_prices(self):
         for resource in self.resource_prices:
             toss = random.random()
             if toss < 0.5:
                 price = self.resource_prices[resource]
-                self.resource_prices[resource] += random.randint(0, price//15) - price//30
+                self.resource_prices[resource] += random.randint(0, price // 15) - price // 30
             elif toss < 0.65:
                 self.resource_prices[resource] = int(self.resource_prices[resource] * 1.2)
             elif toss < 0.72:
                 self.resource_prices[resource] = int(self.resource_prices[resource] * 0.7)
             self.resource_prices[resource] = max(10, self.resource_prices[resource])
-
 
     def update(self, character):
         self.update_resource_prices()
@@ -72,9 +86,9 @@ class World:
         elif self.state["Time of day"] == "Afternoon":
             self.state["Time of day"] = "Night"
 
-        for c in ["corpo1", "corpo2", "corpo3", "corpo4"]:
+        for c in ["corpo1", "corpo2"]:
             toss = random.random()
-            if toss < 0.1:
+            if toss < 0.2:
                 self.playfair_jobs[c] = generate_corpo_job()
 
     def display(self):
@@ -84,7 +98,7 @@ class World:
         missions = []
         if self.state["Location"] == "The City of Playfair":
             toss = random.randint(1, 100)
-            if toss < character.personality["Degeneracy"]//2 - 15:
+            if toss < character.personality["Degeneracy"] // 2 - 15:
                 possible_villain_missions = []
 
                 if "Playfair Citizen" not in character.traits:
@@ -93,7 +107,7 @@ class World:
                 possible_villain_missions.append(FistfightQuest())
                 possible_villain_missions.append(PickpocketQuest())
 
-                if len(possible_villain_missions)>0:
+                if len(possible_villain_missions) > 0:
                     missions.append(random.choice(possible_villain_missions))
         self.missions = missions
 
@@ -126,7 +140,8 @@ class World:
                 quests.append(ShelterPlayfairQuest())
             else:
                 quests += self.missions
-                if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags or (character.degree is not None and character.degree["place"] == "The City of Playfair"):
+                if "PU_charisma_class" in character.tags or "PU_intelligence_class" in character.tags or (
+                        character.degree is not None and character.degree["place"] == "The City of Playfair"):
                     quests.append(StudentQuest(character, self.state["Time of day"]))
                 if "employed" in character.tags and character.job is not None:
                     quests.append(EmploymentQuest(character, self.state["Day"]))
@@ -166,5 +181,3 @@ class World:
         else:
             world.image = None
         return world
-
-

@@ -40,5 +40,15 @@ companies = {
         "The Quarry is located at the outskirts of the City. The facility spans several square kilometers."
     ),
     "employee_trait": "Quarry Employee"
+},
+"Patrician's Palace": {
+    "name": "Patrician's Palace",
+    "image_path": "world/img/companies/palace.jpg",
+    "short_description": "The palace is in need of diligent servants to maintain cleanliness and attend to the daily needs of its esteemed residents.",
+    "long_description": (
+        "Patrician's Palace, located in the heart of the City, is a grand residence requiring constant upkeep. The palace grounds include luxurious gardens and buildings where numerous servants work tirelessly to ensure the comfort and satisfaction of the city's elite."
+    ),
+    "employee_trait": "Palace Servant"
 }
+
 }
